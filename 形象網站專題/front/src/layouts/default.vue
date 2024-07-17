@@ -1,27 +1,31 @@
 <template>
   <v-app>
-    <v-app-bar id="app-bar">
-      <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
-      <v-navigation-drawer v-model="drawer" app>
+    <!-- Navigation Drawer -->
+    <v-navigation-drawer v-model="drawer" app>
       <v-list>
-        <v-subheader>Menu</v-subheader>
-        <v-list-group v-for="category in menu" :key="category.name" :value="true">
-          <template v-slot:activator>
-            <v-list-item-content>
-              <v-list-item-title>{{ category.name }}</v-list-item-title>
-            </v-list-item-content>
-          </template>
-          <v-list-item v-for="item in category.items" :key="item.text" :to="item.to">
+        <template v-for="section in menu" :key="section.name">
+          <v-subheader>{{ section.name }}</v-subheader>
+          <v-list-item v-for="item in section.items" :key="item.text" :to="item.to" link>
             <v-list-item-content>
               <v-list-item-title>{{ item.text }}</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
-        </v-list-group>
+        </template>
       </v-list>
     </v-navigation-drawer>
+    <!-- Header -->
+    <v-app-bar app id="app-bar">
+      <v-btn icon @click="drawer = !drawer">
+        <v-icon>mdi-menu</v-icon>
+      </v-btn>
       <v-img src="../assets/logo01.webp"></v-img>
-      <v-btn prepend-icon="mdi-account-arrow-left">登入</v-btn>
+      <v-spacer></v-spacer>
+      <v-btn text>首頁</v-btn>
+      <v-btn text>關於我們</v-btn>
+      <v-btn text>服務</v-btn>
+      <v-btn text>聯繫我們</v-btn>
     </v-app-bar>
+    <!-- Main Content -->
     <v-main>
       <router-view />
     </v-main>
@@ -80,6 +84,7 @@ const menu = [
     ]
   }
 ]
+const drawer = ref(false)
 </script>
 
 <style lang="scss">
