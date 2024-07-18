@@ -1,29 +1,32 @@
 <template>
-  <v-app>
     <!-- Navigation Drawer -->
-    <v-navigation-drawer v-model="drawer" app>
-      <v-list>
-        <template v-for="section in menu" :key="section.name">
-          <v-subheader>{{ section.name }}</v-subheader>
-          <v-list-item v-for="item in section.items" :key="item.text" :to="item.to" link>
-            <v-list-item-content>
-              <v-list-item-title>{{ item.text }}</v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-        </template>
-      </v-list>
+    <v-navigation-drawer v-model="drawer" temporary location="top">
+      <v-container>
+        <v-row>
+          <v-col v-for="section in menu" :key="section.name" cols="4">
+            <!-- <v-subheader>{{ section.name }}</v-subheader> -->
+            <v-list>
+              <v-list-item v-for="item in section.items" :key="item.text" :to="item.to" link>
+                <v-list-item-content>
+                  <v-list-item-title class="text-center">{{ item.text }}</v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
+            </v-list>
+          </v-col>
+        </v-row>
+      </v-container>
     </v-navigation-drawer>
     <!-- Header -->
-    <v-app-bar app id="app-bar">
+    <v-app-bar id="app-bar">
       <v-btn icon @click="drawer = !drawer">
         <v-icon>mdi-menu</v-icon>
       </v-btn>
-      <v-img src="../assets/logo01.webp"></v-img>
+      <v-img src="../assets/logo01.webp" @click="$router.push('/')"></v-img>
       <v-spacer></v-spacer>
-      <v-btn text>首頁</v-btn>
-      <v-btn text>關於我們</v-btn>
-      <v-btn text>服務</v-btn>
-      <v-btn text>聯繫我們</v-btn>
+      <v-btn>首頁</v-btn>
+      <v-btn>關於我們</v-btn>
+      <v-btn>服務</v-btn>
+      <v-btn>聯繫我們</v-btn>
     </v-app-bar>
     <!-- Main Content -->
     <v-main>
@@ -54,7 +57,6 @@
         </v-row>
       </v-container>
     </v-footer>
-  </v-app>
 </template>
 
 <script setup>
@@ -90,7 +92,7 @@ const drawer = ref(false)
 <style lang="scss">
 @import '../styles/settings.scss';
 #app-bar{
-  background:lighten($second-color, 5%)
+  background:lighten($second-color, 5%);
 }
 #footer{
   background: lighten($third-color, 5%);
@@ -107,8 +109,5 @@ const drawer = ref(false)
 
 .address{
   text-align: center;
-  @include lg{
-    text-align: right;
-  }
 }
 </style>

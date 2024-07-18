@@ -10,7 +10,6 @@ import 'vuetify/styles'
 
 // Composables
 import { createVuetify } from 'vuetify'
-
 import { zhHant } from 'vuetify/locale'
 
 // https://vuetifyjs.com/en/introduction/why-vuetify/#feature-guides

@@ -1,10 +1,10 @@
 <template>
   <!-- heroPic -->
-  <v-container class="h-screen">
+  <v-sheet>
     <v-img src="../assets/heroPic.jpg"></v-img>
-  </v-container>
+  </v-sheet>
   <!-- about us -->
-  <v-container class="h-screen">
+  <v-container>
     <v-col cols="12" class="text-center" >
       <h1>about us</h1>
     </v-col>
@@ -13,7 +13,7 @@
     </div>
   </v-container>
   <!-- our services -->
-  <v-container class="h-screen">
+  <v-container>
     <v-col cols="12" class="text-center" >
       <h1>our services</h1>
     </v-col>
@@ -27,7 +27,7 @@
     </v-row>
   </v-container>
   <!-- learn more -->
-  <v-container class="h-screen">
+  <v-container>
     <v-col cols="12" class="text-center">
       <h1>learn more</h1>
     </v-col>
