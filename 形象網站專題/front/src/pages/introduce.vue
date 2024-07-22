@@ -1,11 +1,11 @@
 <template>
   <!-- Hero Pic -->
   <v-sheet>
-    <v-img src="../assets/about us.jpg"></v-img>
+    <v-img src="../assets/about/about.jpeg"></v-img>
   </v-sheet>
   <!-- Choir -->
   <v-container>
-    <v-img src="../assets/about us.jpg" class="bg_img">
+    <v-img src="../assets/about/choir.jpg" class="bg_img">
       <p class="text-center text-overlay">
         木樓合唱團為室內男聲合唱團，1999年成立至今秉持「男聲合唱藝術精緻化」的理念，透過追求完美的演唱，呈現深度藝術性的音樂內涵；透過歌者與聽眾間心靈感受的對話，傳達出音樂精緻的美感
       </p>
@@ -27,16 +27,13 @@
                   ></div>
                 </template>
                 <div>
-                  <h2
+                  <!-- <h2
                     :class="`mt-n1 headline font-weight-light mb-4 text-${year.color}`"
                   >
-                    Lorem ipsum
-                  </h2>
+                    {{ year.title }}
+                  </h2> -->
                   <div>
-                    Lorem ipsum dolor sit amet, no nam oblique veritus. Commune
-                    scaevola imperdiet nec ut, sed euismod convenire principes
-                    at. Est et nobis iisque percipit, an vim zril disputando
-                    voluptatibus, vix an salutandi sententiae.
+                    {{ year.description }}
                   </div>
                 </div>
               </v-timeline-item>
@@ -50,9 +47,11 @@
   <v-container>
     <v-row>
       <v-col cols="6" class="text-center align-content-center"
-        ><p>
+        ><h1 class="text-left pb-5">藝術總監暨指揮　彭孟賢</h1>
+        <p>
           自2013年起擔任木樓合唱團藝術總監暨常任指揮至今，帶領該團於國際賽中連續獲得首獎殊榮；2015年彭孟賢帶領木樓合唱團榮獲《第九屆布拉姆斯國際合唱大賽暨音樂節》大賽總冠軍，2016年再度帶領木樓榮獲《第九屆世界合唱大賽冠軍賽》男聲室內合唱世界金牌總冠軍，木樓合唱團於德國國際文化交流基金會世界千大合唱團排名中，自2016年至2020年3月於室內合唱團項目連續四年蟬聯冠軍寶座。彭孟賢於藝術性、音樂能力、樂曲呈現整體性等方面獲得極高評價，國際評審曾讚譽：「瘋狂而驚人的指揮、令人崇敬的成就、迷人而撼動人心的音樂」。
         </p>
+        <div class="pb-5"></div>
         <DialogComponent title="藝術總監暨指揮　彭孟賢">
           <template #content>
             現任臺灣合唱協會常任理事、德國國際文化交流基金會舉辦之國際合唱大賽評審、木樓合唱團藝術總監暨指揮、國立客家兒童合唱團團長暨指揮、臺北市教師合唱團藝術總監暨指揮、臺大EMBA合唱團藝術總監暨指揮、原聲國際學院合唱團藝術總監暨指揮、榮星青少年合唱團暨室內婦女合唱團音樂總監暨指揮、大愛之聲合唱團指揮、福建省藝術教育協會藝術顧問、美國合唱協會會員。2021年受邀擔任臺北市立交響樂團附設合唱團客席指揮。曾獲頒「特殊優良教師暨卓越獎」、「藝術教育貢獻獎」、「臺灣國際重唱藝術節暨創新合唱比賽─最佳指揮獎」。2020年獲頒「客家事務獎章」，並入選「2020臺灣客家名人錄」。
@@ -66,7 +65,7 @@
         ></v-col
       >
       <v-col cols="6">
-        <v-img src="../assets/conductor.png"></v-img>
+        <v-img src="../assets/about/conductor.png"></v-img>
       </v-col>
     </v-row>
   </v-container>
@@ -74,12 +73,14 @@
   <v-container>
     <v-row>
       <v-col cols="6">
-        <v-img src="../assets/pianist.webp"></v-img>
+        <v-img src="../assets/about/pianist.webp"></v-img>
       </v-col>
       <v-col cols="6" class="text-center align-content-center"
-        ><p>
+        ><h1 class="text-left pb-5">鋼琴　王乃加</h1>
+        <p>
           自3歲開始學習鋼琴。師事謝秋月、林得恩、徐頌仁、諸大明等教授。曾受鋼琴家史蘭倩絲卡讚譽「擁有驚人的視譜能力，是位不可多得的伴奏家」。美國新英格蘭音樂院教授派翠希亞．桑德讚賞「其演奏令人印象深刻，是位有潛力、天賦異稟的鋼琴家」。現任教於多所音樂班，以及擔任台北愛樂歌劇坊、台北室內合唱團、木樓合唱團鋼琴合作。亦擁有個人專屬頻道，定期發表編創作品。
         </p>
+        <div class="pb-5"></div>
         <DialogComponent title="鋼琴　王乃加">
           <template #content>
             自3歲開始學習鋼琴。師事謝秋月、林得恩、徐頌仁、諸大明等教授。曾受鋼琴家史蘭倩絲卡讚譽「擁有驚人的視譜能力，是位不可多得的伴奏家」。美國新英格蘭音樂院教授派翠希亞．桑德讚賞「其演奏令人印象深刻，是位有潛力、天賦異稟的鋼琴家」。現任教於多所音樂班，以及擔任台北愛樂歌劇坊、台北室內合唱團、木樓合唱團鋼琴合作。亦擁有個人專屬頻道，定期發表編創作品。
@@ -97,23 +98,78 @@ import DialogComponent from "@/components/dialog.vue";
 const years = [
   {
     color: "cyan",
-    year: "1960",
+    year: "1999",
+    description: "木樓合唱團正式成立。",
   },
   {
     color: "green",
-    year: "1970",
+    year: "2007",
+    description:
+      "赴日參加《第23屆寶塚國際室內合唱比賽》，獲民謠組金牌、浪漫組銀牌、綜合成績第二名。",
   },
   {
     color: "pink",
-    year: "1980",
+    year: "2010",
+    description:
+      "發行專輯《Wandering in a Song 流＋轉》：2010年《大鳴大放》音樂會實況錄音，入圍第22屆金曲獎傳統暨藝術音樂類『最佳演唱獎』。",
   },
   {
     color: "amber",
-    year: "1990",
+    year: "2012",
+    description: "受邀於新加坡、馬來西亞新山、泰國曼谷等地舉辦四場巡演音樂會。",
   },
   {
     color: "orange",
-    year: "2000",
+    year: "2013",
+    description:
+      "彭孟賢老師接任藝術總監暨指揮，並首度於國家音樂廳舉辦專場音樂會。",
+  },
+  {
+    color: "cyan",
+    year: "2014",
+    description: "啟動《吹動島嶼的風》委託創作計畫，並於臺北中山堂正式發表。",
+  },
+  {
+    color: "green",
+    year: "2015",
+    description:
+      "赴德參加《第九屆德國布拉姆斯國際合唱大賽》獲得宗教組、民謠組、男聲室內合唱組等三面金牌，並榮獲大賽總冠軍。",
+  },
+  {
+    color: "pink",
+    year: "2016",
+    description:
+      "赴俄羅斯參加《第九屆世界合唱大賽：冠軍賽》獲得無伴奏宗教音樂組、男聲室內合唱組、現代音樂組等三面金牌，並以打破大會紀錄之高分贏得男聲室內合唱世界金牌冠軍！因代表臺灣參賽，表現優異、為國爭光，回國後接受蔡英文總統與文化部鄭麗君部長接見表揚。",
+  },
+  {
+    color: "amber",
+    year: "2017",
+    description:
+      "7月受《新加坡國際合唱節》邀請擔任駐節邀請團，於活動中舉辦兩場專場公演，並與星洲日報合作於馬來西亞吉隆坡舉辦《璀璨臺灣》音樂會。同年7月受中國福建省藝術教育協會邀請擔任《第一屆海峽兩岸合唱教育大會》邀請擔任示範團隊，赴中國福州演出專場音樂會。發行專輯《吹動島嶼的風》，為詞曲全委創專輯，獲財團法人國家文化藝術基金會補助出版。另發行精選輯《木色Ⅱ》，收錄華語、臺語等多首作品。",
+  },
+  {
+    color: "orange",
+    year: "2018",
+    description:
+      "首度受邀赴美，於西雅圖、達拉斯、舊金山等三城舉辦巡迴音樂會。再度接受中國福建省藝術教育協會邀請，赴中國廈門市擔任《第二屆海峽兩岸合唱教育大會》示範團隊，演出兩場專場音樂會。",
+  },
+  {
+    color: "cyan",
+    year: "2019",
+    description:
+      "2019年2月接受美國合唱指揮協會ACDA邀請，赴堪薩斯於《60周年全美雙年總會》演出；同時受邀於舊金山史丹佛大學紀念教堂與洛杉磯巡演。成立首支附屬團隊「木樓松柏合唱團」，推廣並經營精緻純男聲合唱",
+  },
+  {
+    color: "green",
+    year: "2020",
+    description:
+      "接受國際合唱聯盟IFCM邀請，赴紐西蘭奧克蘭市於每三年舉辦一次的合唱盛事─《世界合唱大會WSCM》演出兩場專場音樂會（因COVID-19疫情最終未能成行",
+  },
+  {
+    color: "pink",
+    year: "2021",
+    description:
+      "發行專輯《木色Ⅲ─愛的禮讚》，並獲110年度財團法人國家文化藝術基金會及臺北市政府文化局補助出版。成立「木色歌手」，培養追求頂尖卓越並具備豐富音樂素養、優秀演唱能力的歌手，持續琢磨打造木樓作為精緻男聲合唱的品牌。",
   },
 ];
 </script>

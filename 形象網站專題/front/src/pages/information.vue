@@ -1,27 +1,35 @@
 <template>
   <!-- Review -->
-  <v-sheet class="text-center">
+  <v-sheet class="text-center mb-5 pb-5">
     <h1 class="pa-6 mt-6">演出回顧</h1>
     <div class="pa-6">
       <Carousel
         :images="images"
         :slidesPerView="5"
-        :spaceBetween="20"
+        :spaceBetween="40"
         :loop="true"
+        centeredSlides="true"
+        slideToClickedSlide="true"
+        :breakpoints="breakpoints"
+        class="mySwiper overflow-visible"
       />
     </div>
-    <DialogComponent title="關於我們">
-      <!-- Timeline -->
-      <template #content></template>
-    </DialogComponent>
+    <div class="mt-5 pt-5">
+      <DialogComponent title="關於我們">
+        <!-- Timeline -->
+        <template #content></template>
+      </DialogComponent>
+    </div>
   </v-sheet>
   <!-- Youtube -->
   <v-container>
     <v-row>
-      <v-col><h1>木樓合唱團 YouTube頻道</h1></v-col>
-      <v-col class="text-right"
+      <v-col lg="6" cols="12" class="text-center text-lg-left"
+        ><h1>木樓合唱團 YouTube頻道</h1></v-col
+      >
+      <v-col lg="6" cols="12" class="text-center text-lg-right"
         ><iframe
-          style="height: 70px; width: 200px"
+          style="height: 55px; width: 200px"
           target="_blank"
           frameborder="0"
           src="https://static.parastorage.com/services/editor-elements-library/dist/thunderbolt/media/iframe.deb83caf.html?channel=MullerOfficial&amp;layout=full&amp;theme=default"
@@ -79,25 +87,50 @@
 </template>
 
 <script setup>
+import { defineProps } from "vue";
+const props = defineProps({
+  breakpoints: {
+    type: Object,
+    default: () => ({
+      600: {
+        slidesPerView: 2,
+        spaceBetween: 20,
+      },
+      960: {
+        slidesPerView: 3,
+        spaceBetween: 30,
+      },
+      1264: {
+        slidesPerView: 4,
+        spaceBetween: 40,
+      },
+      1904: {
+        slidesPerView: 5,
+        spaceBetween: 50,
+      },
+    }),
+  },
+});
+
 import Carousel from "@/components/carousel.vue";
-import review01 from "../assets/review01.jpg";
-import review02 from "../assets/review02.jpg";
-import review03 from "../assets/review03.webp";
-import review04 from "../assets/review04.webp";
-import review05 from "../assets/review05.webp";
-import review06 from "../assets/review06.webp";
-import review07 from "../assets/review07.webp";
-import review08 from "../assets/review08.webp";
-import review09 from "../assets/review09.webp";
-import review10 from "../assets/review10.jpg";
-import review11 from "../assets/review11.webp";
+// import review01 from "../assets/review/review01.jpg";
+// import review02 from "../assets/review/review02.jpg";
+import review03 from "../assets/review/review03.webp";
+// import review04 from "../assets/review/review04.jpg";
+import review05 from "../assets/review/review05.webp";
+import review06 from "../assets/review/review06.webp";
+import review07 from "../assets/review/review07.webp";
+import review08 from "../assets/review/review08.webp";
+import review09 from "../assets/review/review09.webp";
+import review10 from "../assets/review/review10.webp";
+import review11 from "../assets/review/review11.webp";
 import DialogComponent from "@/components/dialog.vue";
 
 const images = [
-  review01,
-  review02,
+  // review01,
+  // review02,
   review03,
-  review04,
+  // review04,
   review05,
   review06,
   review07,
@@ -159,3 +192,15 @@ const videos = [
   },
 ];
 </script>
+
+<style scoped>
+:deep(.carousel-image) {
+  width: 100%;
+  height: auto;
+  transition: transform 0.3s ease;
+}
+
+:deep(.swiper-slide-active .carousel-image) {
+  transform: scale(1.2); /* 調整中間圖片的放大比例 */
+}
+</style>
