@@ -10,30 +10,23 @@
         木樓合唱團為室內男聲合唱團，1999年成立至今秉持「男聲合唱藝術精緻化」的理念，透過追求完美的演唱，呈現深度藝術性的音樂內涵；透過歌者與聽眾間心靈感受的對話，傳達出音樂精緻的美感
       </p>
       <div class="btn-overlay">
-        <DialogComponent title="關於我們">
+        <DialogComponent title="大事記">
           <!-- Timeline -->
           <template #content>
-            <v-timeline align="start">
+            <v-timeline align="start" side="end">
               <v-timeline-item
-                v-for="(year, i) in years"
+                v-for="(year, i) in combinedYears"
                 :key="i"
                 :dot-color="year.color"
                 size="small"
               >
-                <template v-slot:opposite>
-                  <div
-                    :class="`pt-1 headline font-weight-bold text-${year.color}`"
-                    v-text="year.year"
-                  ></div>
-                </template>
-                <div>
-                  <!-- <h2
-                    :class="`mt-n1 headline font-weight-light mb-4 text-${year.color}`"
-                  >
-                    {{ year.title }}
-                  </h2> -->
+                <div class="d-flex">
+                  <strong class="me-4">{{ year.year }}</strong>
                   <div>
-                    {{ year.description }}
+                    <strong>{{ year.title }}</strong>
+                    <div class="text-caption">
+                      {{ year.description }}
+                    </div>
                   </div>
                 </div>
               </v-timeline-item>
@@ -95,6 +88,8 @@
 
 <script setup>
 import DialogComponent from "@/components/dialog.vue";
+import { computed } from "vue";
+
 const years = [
   {
     color: "cyan",
@@ -107,6 +102,8 @@ const years = [
     description:
       "赴日參加《第23屆寶塚國際室內合唱比賽》，獲民謠組金牌、浪漫組銀牌、綜合成績第二名。",
   },
+];
+const years_10 = [
   {
     color: "pink",
     year: "2010",
@@ -159,6 +156,8 @@ const years = [
     description:
       "2019年2月接受美國合唱指揮協會ACDA邀請，赴堪薩斯於《60周年全美雙年總會》演出；同時受邀於舊金山史丹佛大學紀念教堂與洛杉磯巡演。成立首支附屬團隊「木樓松柏合唱團」，推廣並經營精緻純男聲合唱",
   },
+];
+const years_20 = [
   {
     color: "green",
     year: "2020",
@@ -172,6 +171,7 @@ const years = [
       "發行專輯《木色Ⅲ─愛的禮讚》，並獲110年度財團法人國家文化藝術基金會及臺北市政府文化局補助出版。成立「木色歌手」，培養追求頂尖卓越並具備豐富音樂素養、優秀演唱能力的歌手，持續琢磨打造木樓作為精緻男聲合唱的品牌。",
   },
 ];
+const combinedYears = computed(() => [...years, ...years_10, ...years_20]);
 </script>
 
 <style scoped>
