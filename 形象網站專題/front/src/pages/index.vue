@@ -1,47 +1,49 @@
 <template>
+  <v-main id="bg">
   <!-- heroPic -->
-  <v-sheet>
-    <v-img src="../assets/home/carousel01.jpg"></v-img>
-  </v-sheet>
-  <!-- about us -->
-  <v-container>
-    <v-col cols="12" class="text-center">
-      <h1>about us</h1>
-    </v-col>
-    <div class="pic-center">
-      <v-img src="../assets/home/about.jpeg" class="w-75"></v-img>
-    </div>
-  </v-container>
-  <!-- our services -->
-  <v-container>
-    <v-col cols="12" class="text-center">
-      <h1>our services</h1>
-    </v-col>
-    <v-row justify="center" align="center">
+    <v-sheet>
+      <v-img src="../assets/home/carousel01.jpg"></v-img>
+    </v-sheet>
+    <!-- about us -->
+    <v-container>
+      <v-col cols="12" class="text-center">
+        <h1>about us</h1>
+      </v-col>
+      <div class="pic-center">
+        <v-img src="../assets/home/about.jpeg" class="w-75"></v-img>
+      </div>
+    </v-container>
+    <!-- our services -->
+    <v-container>
+      <v-col cols="12" class="text-center">
+        <h1>our services</h1>
+      </v-col>
+      <v-row justify="center" align="center">
       <v-col cols="4">
         <v-img src="../assets/home/gototicket.jpg"></v-img>
       </v-col>
       <v-col cols="4">
         <v-img src="../assets/home/gototicket.jpg"></v-img>
       </v-col>
-    </v-row>
-  </v-container>
-  <!-- learn more -->
-  <v-container>
-    <v-col cols="12" class="text-center">
-      <h1>learn more</h1>
-    </v-col>
-    <v-row justify="center" align="center">
-      <v-col cols="12">
-        <Carousel
-          :images="images"
-          :slidesPerView="3"
-          :spaceBetween="20"
-          :loop="true"
-        />
+      </v-row>
+    </v-container>
+    <!-- learn more -->
+    <v-container>
+      <v-col cols="12" class="text-center">
+        <h1>learn more</h1>
       </v-col>
-    </v-row>
-  </v-container>
+      <v-row justify="center" align="center">
+        <v-col cols="12">
+          <Carousel
+            :images="images"
+            :slidesPerView="3"
+            :spaceBetween="20"
+            :loop="true"
+          />
+        </v-col>
+      </v-row>
+    </v-container>
+  </v-main>
 </template>
 
 <script setup>
@@ -62,6 +64,11 @@ const images = [review, video, contact];
 </script>
 
 <style scoped>
+#bg{
+  background: url(../assets/home/bg.jpg) no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
+}
 .pic-center {
   margin: auto;
   display: flex;

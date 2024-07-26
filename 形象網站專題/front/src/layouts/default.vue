@@ -36,9 +36,7 @@
     <v-btn>聯繫我們</v-btn>
   </v-app-bar>
   <!-- Main Content -->
-  <v-main>
     <router-view />
-  </v-main>
   <v-footer id="footer">
     <v-container>
       <v-row class="text-center">
@@ -87,9 +85,9 @@ const menu = [
   {
     name: "shop",
     items: [
-      { text: "會員登入", to: "/shop" },
-      { text: "出版專輯", to: "/shop" },
-      { text: "訂票查詢", to: "/shop" },
+      { text: "會員登入", to: "/member" },
+      { text: "出版專輯", to: "/shop/product" },
+      { text: "訂票查詢", to: "/shop/ticket" },
     ],
   },
 ];
@@ -112,9 +110,5 @@ const drawer = ref(false);
       color: $first-color;
     }
   }
-}
-
-.address {
-  text-align: center;
 }
 </style>

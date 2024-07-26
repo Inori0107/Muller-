@@ -1,10 +1,12 @@
 <template>
-  <!-- Hero Pic -->
-  <v-sheet>
-    <v-img src="../assets/about/about.jpeg"></v-img>
-  </v-sheet>
-  <!-- Choir -->
-  <v-container>
+  <v-main id="bg">
+    <!-- Hero Pic -->
+    <v-sheet>
+      <v-img src="../assets/about/about.jpeg"></v-img>
+    </v-sheet>
+    <div class="bg">
+      <!-- Choir -->
+      <v-container>
     <v-img src="../assets/about/choir.jpg" class="bg_img">
       <p class="text-center text-overlay">
         木樓合唱團為室內男聲合唱團，1999年成立至今秉持「男聲合唱藝術精緻化」的理念，透過追求完美的演唱，呈現深度藝術性的音樂內涵；透過歌者與聽眾間心靈感受的對話，傳達出音樂精緻的美感
@@ -35,9 +37,9 @@
         </DialogComponent>
       </div>
     </v-img>
-  </v-container>
-  <!-- Conductor -->
-  <v-container>
+      </v-container>
+      <!-- Conductor -->
+      <v-container>
     <v-row>
       <v-col cols="6" class="text-center align-content-center"
         ><h1 class="text-left pb-5">藝術總監暨指揮　彭孟賢</h1>
@@ -61,9 +63,9 @@
         <v-img src="../assets/about/conductor.png"></v-img>
       </v-col>
     </v-row>
-  </v-container>
-  <!-- Pianist -->
-  <v-container>
+      </v-container>
+      <!-- Pianist -->
+      <v-container>
     <v-row>
       <v-col cols="6">
         <v-img src="../assets/about/pianist.webp"></v-img>
@@ -83,7 +85,9 @@
         ></v-col
       >
     </v-row>
-  </v-container>
+      </v-container>
+    </div>
+  </v-main>
 </template>
 
 <script setup>
@@ -184,6 +188,14 @@ const combinedYears = computed(() => [...years, ...years_10, ...years_20]);
 </script>
 
 <style scoped>
+#bg{
+  background: url(../assets/home/bg.jpg) no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
+}
+.bg{
+  background: radial-gradient(rgba(255, 255, 255, 1), rgba(255, 255, 255, 0.1)), url(../assets/about/bg.jpg) no-repeat;
+}
 .bg_img {
   opacity: 0.7; /* 使圖片半透明 */
   position: relative;

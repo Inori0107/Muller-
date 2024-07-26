@@ -19,6 +19,14 @@ const schema = new Schema(
       type: String,
       required: [true, '商品說明必填']
     },
+    category: {
+      type: String,
+      required: [true, '商品分類必填'],
+      enum: {
+        values: ['專輯', '樂譜'],
+        message: '商品分類錯誤'
+      }
+    },
     sell: {
       type: Boolean,
       required: [true, '商品上架狀態必填']

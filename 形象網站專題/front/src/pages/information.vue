@@ -1,28 +1,29 @@
 <template>
+  <v-main id="bg">
   <!-- Review -->
-  <v-sheet class="text-center mb-5 pb-5">
-    <h1 class="pa-6 mt-6">演出回顧</h1>
-    <div class="pa-6">
-      <Carousel
-        :images="images"
-        :slidesPerView="5"
-        :spaceBetween="40"
-        :loop="true"
-        centeredSlides="true"
-        slideToClickedSlide="true"
-        :breakpoints="breakpoints"
-        class="mySwiper overflow-visible"
-      />
-    </div>
-    <div class="mt-5 pt-5">
-      <DialogComponent title="關於我們">
-        <!-- Timeline -->
-        <template #content></template>
-      </DialogComponent>
-    </div>
-  </v-sheet>
-  <!-- Youtube -->
-  <v-container>
+    <v-sheet class="text-center mb-5 pb-5">
+      <h1 class="pa-6">演出回顧</h1>
+      <div class="pa-6">
+        <Carousel
+          :images="images"
+          :slidesPerView="5"
+          :spaceBetween="40"
+          :loop="true"
+          centeredSlides="true"
+          slideToClickedSlide="true"
+          :breakpoints="breakpoints"
+          class="mySwiper overflow-visible"
+        />
+      </div>
+      <div class="mt-5 pt-5">
+        <DialogComponent title="關於我們">
+          <!-- Timeline -->
+          <template #content></template>
+        </DialogComponent>
+      </div>
+    </v-sheet>
+    <!-- Youtube -->
+    <v-container>
     <v-row>
       <v-col lg="6" cols="12" class="text-center text-lg-left"
         ><h1>木樓合唱團 YouTube頻道</h1></v-col
@@ -82,8 +83,9 @@
         </v-col>
       </template>
       <v-divider class="mt-5 mb-5" />
-    </v-row>
-  </v-container>
+      </v-row>
+    </v-container>
+  </v-main>
 </template>
 
 <script setup>
@@ -204,6 +206,11 @@ const videos = [
 </script>
 
 <style scoped>
+#bg{
+  background: url(../assets/home/bg.jpg) no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
+}
 :deep(.carousel-image) {
   width: 100%;
   height: auto;
