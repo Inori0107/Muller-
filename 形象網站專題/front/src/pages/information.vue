@@ -87,7 +87,17 @@
 </template>
 
 <script setup>
+import { definePage } from 'vue-router/auto';
 import { defineProps } from "vue";
+
+definePage({
+  meta: {
+    title: '木樓合唱團 | 了解更多',
+    login: false,
+    admin: false
+  }
+})
+
 const props = defineProps({
   breakpoints: {
     type: Object,

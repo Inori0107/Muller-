@@ -87,8 +87,17 @@
 </template>
 
 <script setup>
+import { definePage } from 'vue-router/auto';
 import DialogComponent from "@/components/dialog.vue";
 import { computed } from "vue";
+
+definePage({
+  meta: {
+    title: '木樓合唱團 | 關於我們',
+    login: false,
+    admin: false
+  }
+})
 
 const years = [
   {

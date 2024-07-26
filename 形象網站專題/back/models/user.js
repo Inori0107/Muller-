@@ -7,29 +7,28 @@ const productSchema = Schema({
   p_id: {
     type: ObjectId,
     ref: 'products',
-    required: [true, '使用者購物車 商品必填']
+    required: [true, '使用者購物車商品必填']
   },
   quantity: {
     type: Number,
-    required: [true, '使用者購物車 商品數量必填'],
-    min: [1, '使用者購物車 商品數量不符']
+    required: [true, '使用者購物車商品數量必填'],
+    min: [1, '使用者購物車商品數量不符']
   }
 })
 // 票購物車
 const ticketSchema = Schema({
-  t_id: {
-    type: ObjectId,
-    ref: 'tickets',
-    required: [true, '使用者購物車 票必填']
+  date:{
+    type: Date,
+    required: [true, '使用者購物車票券日期必填']
   },
   quantity: {
     type: Number,
-    required: [true, '使用者購物車 票數量必填'],
-    min: [1, '使用者購物車 票數量不符']
+    required: [true, '使用者購物車票券數量必填'],
+    min: [1, '使用者購物車票券數量不符']
   },
   description: {
     type: String,
-    required: [true, '使用者購物車 票描述必填']
+    required: [true, '使用者購物車票券描述必填']
   }
 })
 
@@ -98,10 +97,17 @@ schema.pre('save', function (next) {
   next()
 })
 
-// 回傳購物車總數
-schema.virtual('cartQuantity').get(function () {
+// 回傳商品總數
+schema.virtual('productQuantity').get(function () {
   const user = this
-  return user.cart.reduce((total, current) => {
+  return user.cart_P.reduce((total, current) => {
+    return total + current.quantity
+  }, 0)
+})
+// 回傳票券總數
+schema.virtual('productQuantity').get(function () {
+  const user = this
+  return user.cart_T.reduce((total, current) => {
     return total + current.quantity
   }, 0)
 })

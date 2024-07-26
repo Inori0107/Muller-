@@ -45,10 +45,19 @@
 </template>
 
 <script setup>
+import { definePage } from 'vue-router/auto';
 import Carousel from "@/components/carousel.vue";
 import review from "../assets/home/review.webp";
 import video from "../assets/home/video.webp";
 import contact from "../assets/home/contact.jpg";
+
+definePage({
+  meta: {
+    title: '木樓合唱團',
+    login: false,
+    admin: false
+  }
+})
 const images = [review, video, contact];
 </script>
 
