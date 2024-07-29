@@ -1,7 +1,9 @@
 <template>
-  <v-container>
-    <h1>訂票</h1>
-  </v-container>
+  <v-main>
+    <v-container>
+      <h1>訂票</h1>
+    </v-container>
+  </v-main>
 </template>
 
 <script setup>

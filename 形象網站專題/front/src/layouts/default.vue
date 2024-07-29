@@ -24,27 +24,45 @@
     </v-container>
   </v-navigation-drawer>
   <!-- Header -->
-  <v-app-bar id="app-bar">
+  <v-app-bar id="app-bar" flat height="100%">
     <v-btn icon @click="drawer = !drawer">
       <v-icon>mdi-menu</v-icon>
     </v-btn>
-    <v-img src="../assets/LOGO/logo01.webp" @click="$router.push('/')"></v-img>
     <v-spacer></v-spacer>
-    <v-btn>首頁</v-btn>
-    <v-btn>關於我們</v-btn>
-    <v-btn>服務</v-btn>
-    <v-btn>聯繫我們</v-btn>
+    <div style="height: 100%;width: 200px;" class="my-2 ms-8">
+      <v-img src="../assets/LOGO/logo01.webp" @click="$router.push('/')"></v-img>
+    </div>
+    <v-spacer></v-spacer>
+    <v-btn icon @click="$router.push('/member')">
+      <v-icon>mdi-account</v-icon>
+    </v-btn>
+    <v-btn icon @click="$router.push('/shop/ticket')">
+      <v-icon>mdi-ticket</v-icon>
+    </v-btn>
+    <v-btn icon @click="$router.push('/shop/product')">
+      <v-icon>mdi-cart</v-icon>
+    </v-btn>
   </v-app-bar>
   <!-- Main Content -->
     <router-view />
   <v-footer id="footer">
     <v-container>
       <v-row class="text-center">
-        <v-col lg="2" cols="12">
+        <v-col lg="3" cols="12">
           <h2>木樓合唱團</h2>
           <p>Müller Chamber Choir</p>
           <p>為台灣男聲合唱加油</p>
-          <p></p>
+          <div class="mt-2">
+            <v-btn icon>
+              <v-icon size="x-large">mdi-facebook</v-icon>
+            </v-btn>
+            <v-btn icon>
+              <v-icon size="x-large">mdi-instagram</v-icon>
+            </v-btn>
+            <v-btn icon>
+              <v-icon size="x-large">mdi-youtube</v-icon>
+            </v-btn>
+          </div>
         </v-col>
         <v-col v-for="category in menu" :key="category.name" lg="2">
           <h2>{{ category.name }}</h2>
@@ -56,7 +74,7 @@
           <p>服務專線</p>
           <h2>+886-2-2365-8943</h2>
           <p><i>Fax /</i> +886-2-2341-2340</p>
-          <p><i>Add /</i> 106001臺北市大安區杭州南路二段7-1號B1F</p>
+          <p><i>Add /</i> 106001臺北市大安區杭州南路</p>
           <p><i>Email /</i> muller@muller.org.tw</p>
         </v-col>
       </v-row>
@@ -67,7 +85,7 @@
 <script setup>
 const menu = [
   {
-    name: "introduce",
+    name: "關於我們",
     items: [
       { text: "認識木樓", to: "/introduce" },
       { text: "指揮介紹", to: "/introduce" },
@@ -75,7 +93,7 @@ const menu = [
     ],
   },
   {
-    name: "information",
+    name: "了解更多",
     items: [
       { text: "演出回顧", to: "/information" },
       { text: "影音出版", to: "/information" },
@@ -83,7 +101,7 @@ const menu = [
     ],
   },
   {
-    name: "shop",
+    name: "服務專區",
     items: [
       { text: "會員登入", to: "/member" },
       { text: "出版專輯", to: "/shop/product" },
@@ -97,17 +115,22 @@ const drawer = ref(false);
 <style lang="scss">
 @import "../styles/settings.scss";
 #app-bar {
-  background: lighten($second-color, 5%);
+  background: rgba(236, 236, 236, 0.5);
+  backdrop-filter:blur(10px);
 }
 #footer {
   background: lighten($third-color, 5%);
+  padding: 24px 0;
 }
 .links {
   a {
+    font-size: 1.2rem;
     color: black;
     text-decoration: none;
     &:hover {
-      color: $first-color;
+      color: #f0f0f0;
+      transition: color 0.3s ease;
+      text-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* 增加陰影效果 */
     }
   }
 }

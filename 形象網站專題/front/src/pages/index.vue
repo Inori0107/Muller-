@@ -1,48 +1,67 @@
 <template>
   <v-main id="bg">
   <!-- heroPic -->
-    <v-sheet>
-      <v-img src="../assets/home/carousel01.jpg"></v-img>
+    <v-sheet class="px-8 pt-8">
+      <v-container>
+        <v-col class="my-6">
+          <v-img src="../assets/home/carousel01.jpg"></v-img>
+        </v-col>
+        <v-col class="my-4">
+          <v-img src="../assets/home/medal.webp"></v-img>
+        </v-col>
+      </v-container>
     </v-sheet>
     <!-- about us -->
     <v-container>
-      <v-col cols="12" class="text-center">
-        <h1>about us</h1>
+      <v-col cols="12" class="text-center text-white">
+        <h1 class="leader_text">About Us</h1>
       </v-col>
-      <div class="pic-center">
-        <v-img src="../assets/home/about.jpeg" class="w-75"></v-img>
-      </div>
     </v-container>
+    <v-sheet class="py-16">
+      <v-container>
+        <div class="pic-center">
+          <v-img src="../assets/home/about.jpeg"></v-img>
+        </div>
+      </v-container>
+    </v-sheet>
     <!-- our services -->
     <v-container>
-      <v-col cols="12" class="text-center">
-        <h1>our services</h1>
+      <v-col cols="12" class="text-center text-white">
+        <h1 class="leader_text">Our Services</h1>
       </v-col>
-      <v-row justify="center" align="center">
-      <v-col cols="4">
-        <v-img src="../assets/home/gototicket.jpg"></v-img>
-      </v-col>
-      <v-col cols="4">
-        <v-img src="../assets/home/gototicket.jpg"></v-img>
-      </v-col>
-      </v-row>
     </v-container>
+    <v-sheet class="py-16">
+      <v-container>
+        <v-row justify="center" align="center">
+          <v-col cols="4">
+            <v-img src="../assets/home/gototicket.jpg"></v-img>
+          </v-col>
+          <v-col cols="4">
+            <v-img src="../assets/home/gototicket.jpg"></v-img>
+          </v-col>
+        </v-row>
+      </v-container>
+    </v-sheet>
     <!-- learn more -->
     <v-container>
-      <v-col cols="12" class="text-center">
-        <h1>learn more</h1>
+      <v-col cols="12" class="text-center text-white">
+        <h1 class="leader_text">Learn More</h1>
       </v-col>
-      <v-row justify="center" align="center">
-        <v-col cols="12">
-          <Carousel
-            :images="images"
-            :slidesPerView="3"
-            :spaceBetween="20"
-            :loop="true"
-          />
-        </v-col>
-      </v-row>
     </v-container>
+    <v-sheet class="py-16">
+      <v-container>
+        <v-row justify="center" align="center">
+          <v-col cols="12">
+            <Carousel
+              :images="images"
+              :slidesPerView="3"
+              :spaceBetween="20"
+              :loop="true"
+            />
+          </v-col>
+        </v-row>
+      </v-container>
+    </v-sheet>
   </v-main>
 </template>
 
@@ -65,15 +84,11 @@ const images = [review, video, contact];
 
 <style scoped>
 #bg{
-  background: url(../assets/home/bg.jpg) no-repeat;
+  background: url(../assets/home/home_bg.jpg) no-repeat;
   background-size: cover;
   background-attachment: fixed;
 }
-.pic-center {
-  margin: auto;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 75%;
+.leader_text {
+  text-shadow: #c8c8c8 1px 1px 0px, #b4b4b4 0px 2px 0px, #a0a0a0 0px 3px 0px, rgba(140, 140, 140, 0.498039) 0px 4px 0px, #787878 0px 0px 0px, rgba(0, 0, 0, 0.498039) 0px 5px 10px;
 }
 </style>

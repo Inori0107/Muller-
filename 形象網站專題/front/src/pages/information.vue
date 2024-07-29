@@ -1,9 +1,14 @@
 <template>
   <v-main id="bg">
-  <!-- Review -->
-    <v-sheet class="text-center mb-5 pb-5">
-      <h1 class="pa-6">演出回顧</h1>
-      <div class="pa-6">
+    <v-sheet class="pt-16">
+      <v-container class="mt-8">
+        <v-img src="../assets/review/reviewHome.webp"></v-img>
+      </v-container>
+    </v-sheet>
+    <!-- Review -->
+    <v-container class="text-center mb-4 pb-4">
+      <h1 class="pb-4">演出回顧</h1>
+      <div class="pa-8">
         <Carousel
           :images="images"
           :slidesPerView="5"
@@ -21,84 +26,84 @@
           <template #content></template>
         </DialogComponent>
       </div>
-    </v-sheet>
+    </v-container>
     <!-- Youtube -->
     <v-container>
-    <v-row>
-      <v-col lg="6" cols="12" class="text-center text-lg-left"
-        ><h1>木樓合唱團 YouTube頻道</h1></v-col
+      <v-row>
+        <v-col lg="6" cols="12" class="text-center text-lg-left"
+          ><h1>木樓合唱團 YouTube頻道</h1></v-col
+        >
+        <v-col lg="6" cols="12" class="text-center text-lg-right"
+          ><iframe
+            style="height: 55px; width: 200px"
+            target="_blank"
+            frameborder="0"
+            src="https://static.parastorage.com/services/editor-elements-library/dist/thunderbolt/media/iframe.deb83caf.html?channel=MullerOfficial&amp;layout=full&amp;theme=default"
+          ></iframe
+        ></v-col>
+      </v-row>
+      <v-row class="text-center pt-3 pb-5"
+        >　木樓合唱團官方YouTube頻道，承載了創立至今不同時期的豐富音樂風貌：在國際賽事上得獎的動人時刻、充滿土地情懷的委託創作作品及近年音樂會精選曲目，依照宗教、國際大賽、當代、委託創作、民謠等分門別類，歡迎您盡情地參觀木樓音樂「聲」林！
+        <v-divider class="mt-5" />
+      </v-row>
+      <v-row
+        v-for="(video, index) in videos"
+        :key="index"
+        class="d-flex align-center"
       >
-      <v-col lg="6" cols="12" class="text-center text-lg-right"
-        ><iframe
-          style="height: 55px; width: 200px"
-          target="_blank"
-          frameborder="0"
-          src="https://static.parastorage.com/services/editor-elements-library/dist/thunderbolt/media/iframe.deb83caf.html?channel=MullerOfficial&amp;layout=full&amp;theme=default"
-        ></iframe
-      ></v-col>
-    </v-row>
-    <v-row class="text-center pt-3 pb-5"
-      >　木樓合唱團官方YouTube頻道，承載了創立至今不同時期的豐富音樂風貌：在國際賽事上得獎的動人時刻、充滿土地情懷的委託創作作品及近年音樂會精選曲目，依照宗教、國際大賽、當代、委託創作、民謠等分門別類，歡迎您盡情地參觀木樓音樂「聲」林！
-      <v-divider class="mt-5" />
-    </v-row>
-    <v-row
-      v-for="(video, index) in videos"
-      :key="index"
-      class="d-flex align-center"
-    >
-      <template v-if="index % 2 === 0">
-        <v-col cols="6">
-          <p class="pt-3 pb-5">{{ video.title }}</p>
-          <iframe
-            width="100%"
-            height="315"
-            :src="video.src"
-            title="YouTube video player"
-            frameborder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            referrerpolicy="strict-origin-when-cross-origin"
-            allowfullscreen
-          ></iframe>
-        </v-col>
-        <v-col cols="6">
-          <p v-html="video.info" class="text-center"></p>
-        </v-col>
-      </template>
-      <template v-else>
-        <v-col cols="6">
-          <p v-html="video.info" class="text-center"></p>
-        </v-col>
-        <v-col cols="6">
-          <p class="pt-3 pb-5 text-right">{{ video.title }}</p>
-          <iframe
-            width="100%"
-            height="315"
-            :src="video.src"
-            title="YouTube video player"
-            frameborder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            referrerpolicy="strict-origin-when-cross-origin"
-            allowfullscreen
-          ></iframe>
-        </v-col>
-      </template>
-      <v-divider class="mt-5 mb-5" />
+        <template v-if="index % 2 === 0">
+          <v-col cols="6">
+            <p class="pt-3 pb-5">{{ video.title }}</p>
+            <iframe
+              width="100%"
+              height="315"
+              :src="video.src"
+              title="YouTube video player"
+              frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              referrerpolicy="strict-origin-when-cross-origin"
+              allowfullscreen
+            ></iframe>
+          </v-col>
+          <v-col cols="6">
+            <p v-html="video.info" class="text-center"></p>
+          </v-col>
+        </template>
+        <template v-else>
+          <v-col cols="6">
+            <p v-html="video.info" class="text-center"></p>
+          </v-col>
+          <v-col cols="6">
+            <p class="pt-3 pb-5 text-right">{{ video.title }}</p>
+            <iframe
+              width="100%"
+              height="315"
+              :src="video.src"
+              title="YouTube video player"
+              frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              referrerpolicy="strict-origin-when-cross-origin"
+              allowfullscreen
+            ></iframe>
+          </v-col>
+        </template>
+        <v-divider class="mt-5 mb-5" />
       </v-row>
     </v-container>
   </v-main>
 </template>
 
 <script setup>
-import { definePage } from 'vue-router/auto';
+import { definePage } from "vue-router/auto";
 import { defineProps } from "vue";
 
 definePage({
   meta: {
-    title: '木樓合唱團 | 了解更多',
+    title: "木樓合唱團 | 了解更多",
     login: false,
-    admin: false
-  }
-})
+    admin: false,
+  },
+});
 
 const props = defineProps({
   breakpoints: {
@@ -206,8 +211,8 @@ const videos = [
 </script>
 
 <style scoped>
-#bg{
-  background: url(../assets/home/bg.jpg) no-repeat;
+#bg {
+  /* background: url(../assets/home/bg.jpg) no-repeat; */
   background-size: cover;
   background-attachment: fixed;
 }

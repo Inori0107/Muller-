@@ -1,12 +1,14 @@
 <template>
-  <v-sheet>
-    <v-img src="../../assets/album/heroPic.webp"></v-img>
-  </v-sheet>
-  <v-container class="text-center">
-    <h1>購物</h1>
-    <v-row></v-row>
-    <v-row></v-row>
-  </v-container>
+  <v-main>
+    <v-container>
+      <v-img src="../../assets/album/heroPic.webp"></v-img>
+    </v-container>
+    <v-container class="text-center">
+      <h1>購物</h1>
+      <v-row></v-row>
+      <v-row></v-row>
+    </v-container>
+  </v-main>
 </template>
 
 <script setup>

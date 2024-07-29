@@ -1,5 +1,6 @@
 <template>
-  <v-card
+  <v-main>
+    <v-card
     class="mx-auto"
     max-width="500"
   >
@@ -77,7 +78,8 @@
         Next
       </v-btn>
     </v-card-actions>
-  </v-card>
+    </v-card>
+  </v-main>
 </template>
 <script>
   export default {
