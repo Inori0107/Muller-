@@ -23,28 +23,37 @@
       </v-row>
     </v-container>
   </v-navigation-drawer>
+  <!-- Login & Sign up -->
+  <DialogComponent />
   <!-- Header -->
   <v-app-bar id="app-bar" flat height="100%">
     <v-btn icon @click="drawer = !drawer">
       <v-icon>mdi-menu</v-icon>
     </v-btn>
     <v-spacer></v-spacer>
-    <div style="height: 100%;width: 200px;" class="my-2 ms-8">
-      <v-img src="../assets/LOGO/logo01.webp" @click="$router.push('/')"></v-img>
+    <div style="height: 100%; width: 200px" class="my-2 ms-8">
+      <v-img
+        src="../assets/LOGO/logo01.webp"
+        @click="$router.push('/')"
+      ></v-img>
     </div>
     <v-spacer></v-spacer>
-    <v-btn icon @click="$router.push('/member')">
-      <v-icon>mdi-account</v-icon>
+    <!-- Login & Sign up -->
+    <v-btn icon @click="$router.push('/member')" v-show="!user.isLogin">
+      <member-dialog></member-dialog>
     </v-btn>
+    <v-btn v-if="user.isLogin" icon @click="logout">
+      <v-icon>mdi-account-arrow-right</v-icon></v-btn
+    >
     <v-btn icon @click="$router.push('/shop/ticket')">
       <v-icon>mdi-ticket</v-icon>
     </v-btn>
-    <v-btn icon @click="$router.push('/shop/product')">
+    <v-btn icon @click="$router.push('/shop/cart')">
       <v-icon>mdi-cart</v-icon>
     </v-btn>
   </v-app-bar>
   <!-- Main Content -->
-    <router-view />
+  <router-view />
   <v-footer id="footer">
     <v-container>
       <v-row class="text-center">
@@ -83,6 +92,7 @@
 </template>
 
 <script setup>
+import MemberDialog from "@/components/dialog/dialogMember.vue";
 const menu = [
   {
     name: "關於我們",
@@ -110,13 +120,28 @@ const menu = [
   },
 ];
 const drawer = ref(false);
+
+// 登出
+import { useUserStore } from "@/stores/user";
+import { useSnackbar } from "vuetify-use-dialog";
+const createSnackbar = useSnackbar();
+const user = useUserStore();
+const logout = async () => {
+  await user.logout();
+  createSnackbar({
+    text: "登出成功",
+    snackbarProps: {
+      color: "green",
+    },
+  });
+};
 </script>
 
 <style lang="scss">
 @import "../styles/settings.scss";
 #app-bar {
   background: rgba(236, 236, 236, 0.5);
-  backdrop-filter:blur(10px);
+  backdrop-filter: blur(10px);
 }
 #footer {
   background: lighten($third-color, 5%);

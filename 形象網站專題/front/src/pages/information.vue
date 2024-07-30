@@ -129,7 +129,7 @@ const props = defineProps({
   },
 });
 
-import Carousel from "@/components/carousel.vue";
+import Carousel from "@/components/carousel/carouselImage.vue";
 // import review01 from "../assets/review/review01.jpg";
 // import review02 from "../assets/review/review02.jpg";
 import review03 from "../assets/review/review03.webp";
@@ -141,7 +141,7 @@ import review08 from "../assets/review/review08.webp";
 import review09 from "../assets/review/review09.webp";
 import review10 from "../assets/review/review10.webp";
 import review11 from "../assets/review/review11.webp";
-import DialogComponent from "@/components/dialog.vue";
+import DialogComponent from "@/components/dialog/dialog.vue";
 
 const images = [
   // review01,

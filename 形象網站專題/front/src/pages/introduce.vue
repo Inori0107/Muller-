@@ -102,7 +102,7 @@
 
 <script setup>
 import { definePage } from "vue-router/auto";
-import DialogComponent from "@/components/dialog.vue";
+import DialogComponent from "@/components/dialog/dialog.vue";
 import { computed } from "vue";
 
 definePage({

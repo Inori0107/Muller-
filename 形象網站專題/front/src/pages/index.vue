@@ -1,6 +1,6 @@
 <template>
   <v-main id="bg">
-  <!-- heroPic -->
+    <!-- heroPic -->
     <v-sheet class="px-8 pt-8">
       <v-container>
         <v-col class="my-6">
@@ -66,29 +66,31 @@
 </template>
 
 <script setup>
-import { definePage } from 'vue-router/auto';
-import Carousel from "@/components/carousel.vue";
+import { definePage } from "vue-router/auto";
+import Carousel from "@/components/carousel/carouselImage.vue";
 import review from "../assets/home/review.webp";
 import video from "../assets/home/video.webp";
 import contact from "../assets/home/contact.jpg";
 
 definePage({
   meta: {
-    title: '木樓合唱團',
+    title: "木樓合唱團",
     login: false,
-    admin: false
-  }
-})
+    admin: false,
+  },
+});
 const images = [review, video, contact];
 </script>
 
 <style scoped>
-#bg{
+#bg {
   background: url(../assets/home/home_bg.jpg) no-repeat;
   background-size: cover;
   background-attachment: fixed;
 }
 .leader_text {
-  text-shadow: #c8c8c8 1px 1px 0px, #b4b4b4 0px 2px 0px, #a0a0a0 0px 3px 0px, rgba(140, 140, 140, 0.498039) 0px 4px 0px, #787878 0px 0px 0px, rgba(0, 0, 0, 0.498039) 0px 5px 10px;
+  text-shadow: #c8c8c8 1px 1px 0px, #b4b4b4 0px 2px 0px, #a0a0a0 0px 3px 0px,
+    rgba(140, 140, 140, 0.498039) 0px 4px 0px, #787878 0px 0px 0px,
+    rgba(0, 0, 0, 0.498039) 0px 5px 10px;
 }
 </style>
