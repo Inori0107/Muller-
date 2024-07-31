@@ -5,7 +5,7 @@
         <h1 class="text-center">購物車</h1>
       </v-container>
       <CartProduct />
-      <CartTicket />
+      <!-- <CartTicket /> -->
     </v-sheet>
   </v-main>
 </template>
@@ -13,7 +13,7 @@
 <script setup>
 import { definePage } from "vue-router/auto";
 import CartProduct from "@/components/cart/cartProduct.vue";
-import CartTicket from "@/components/cart/cartTicket.vue";
+// import CartTicket from "@/components/cart/cartTicket.vue";
 
 definePage({
   meta: {

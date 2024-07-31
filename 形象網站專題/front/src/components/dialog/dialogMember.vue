@@ -13,7 +13,7 @@
         <v-card-text>
           <v-row>
             <v-col cols="6" align-self="center">
-              <v-img src="../assets//home/contact us.webp"></v-img>
+              <v-img src="../../assets/home/contact us.webp"></v-img>
             </v-col>
             <v-col cols="6">
               <v-tabs v-model="tab" align-tabs="center" fixed-tabs="false">
@@ -56,5 +56,10 @@ const handleLoginSuccess = () => {
 };
 const SignUp = () => {
   toggleTab.value = true;
+};
+</script>
+<script>
+export const showMemberDialog = () => {
+  isActive.value = true;
 };
 </script>

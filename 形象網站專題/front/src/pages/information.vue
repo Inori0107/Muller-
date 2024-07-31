@@ -9,16 +9,7 @@
     <v-container class="text-center mb-4 pb-4">
       <h1 class="pb-4">演出回顧</h1>
       <div class="pa-8">
-        <Carousel
-          :images="images"
-          :slidesPerView="5"
-          :spaceBetween="40"
-          :loop="true"
-          centeredSlides="true"
-          slideToClickedSlide="true"
-          :breakpoints="breakpoints"
-          class="mySwiper overflow-visible"
-        />
+        <CarouselImage />
       </div>
       <div class="mt-5 pt-5">
         <DialogComponent title="關於我們">
@@ -95,8 +86,7 @@
 
 <script setup>
 import { definePage } from "vue-router/auto";
-import { defineProps } from "vue";
-
+import CarouselImage from "@/components/carousel/carouselImage.vue";
 definePage({
   meta: {
     title: "木樓合唱團 | 了解更多",
@@ -104,58 +94,6 @@ definePage({
     admin: false,
   },
 });
-
-const props = defineProps({
-  breakpoints: {
-    type: Object,
-    default: () => ({
-      600: {
-        slidesPerView: 2,
-        spaceBetween: 20,
-      },
-      960: {
-        slidesPerView: 3,
-        spaceBetween: 30,
-      },
-      1264: {
-        slidesPerView: 4,
-        spaceBetween: 40,
-      },
-      1904: {
-        slidesPerView: 5,
-        spaceBetween: 50,
-      },
-    }),
-  },
-});
-
-import Carousel from "@/components/carousel/carouselImage.vue";
-// import review01 from "../assets/review/review01.jpg";
-// import review02 from "../assets/review/review02.jpg";
-import review03 from "../assets/review/review03.webp";
-// import review04 from "../assets/review/review04.jpg";
-import review05 from "../assets/review/review05.webp";
-import review06 from "../assets/review/review06.webp";
-import review07 from "../assets/review/review07.webp";
-import review08 from "../assets/review/review08.webp";
-import review09 from "../assets/review/review09.webp";
-import review10 from "../assets/review/review10.webp";
-import review11 from "../assets/review/review11.webp";
-import DialogComponent from "@/components/dialog/dialog.vue";
-
-const images = [
-  // review01,
-  // review02,
-  review03,
-  // review04,
-  review05,
-  review06,
-  review07,
-  review08,
-  review09,
-  review10,
-  review11,
-];
 
 const videos = [
   {

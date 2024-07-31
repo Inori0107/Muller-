@@ -47,7 +47,7 @@ export const jwt = (req, res, next) => {
 			} else if (info.message === "未知錯誤") {
 				res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
 					success: false,
-					message: "未知錯誤"
+					message: "jwt未知錯誤"
 				});
 			} else {
 				res.status(StatusCodes.UNAUTHORIZED).json({

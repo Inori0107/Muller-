@@ -13,7 +13,7 @@ import {
 import { setupLayouts } from "virtual:generated-layouts";
 import { useUserStore } from "@/stores/user";
 import { routes } from "vue-router/auto-routes";
-import MemberDialog from "@/components/dialog/dialogMember.vue";
+import { showMemberDialog } from "@/components/dialog/dialogMember.vue";
 
 const router = createRouter({
   history: createWebHashHistory(import.meta.env.BASE_URL),
@@ -27,11 +27,9 @@ router.beforeEach(async (to, from, next) => {
   if (from === START_LOCATION) {
     await user.profile();
   }
-
-  if (to.meta.login && !user.isLogin) {
-    // 顯示會員對話框
-    MemberDialog.show();
-    next(false); // 阻止導航
+  if (to.meta.requiresAuth && !user.isLogin) {
+    showMemberDialog();
+    next(false);
   } else if (to.meta.admin && !user.isAdmin) {
     next("/"); // 導航到首頁
   } else {

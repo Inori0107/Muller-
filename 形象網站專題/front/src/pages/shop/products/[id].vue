@@ -1,34 +1,55 @@
 <template>
-  <v-container>
-    <v-col cols="12">
-      <h1 class="text-center">{{ product.name }}</h1>
-    </v-col>
-    <v-col cols="12">
-      <v-img :src="product.image" height="200"></v-img>
-    </v-col>
-    <v-col cols="12">
-      <p>${{ product.price }}</p>
-      <p>{{ product.description }}</p>
-      <v-form :disabled="isSubmitting" @submit.prevent="submit">
-        <v-text-field
-          type="number"
-          v-model.number="quantity.value.value"
-          :error-messages="quantity.errorMessage.value"
-        ></v-text-field>
-        <v-btn type="submit" prepend-icon="mdi-cart" :loading="isSubmitting"
-          >加入購物車</v-btn
-        >
-      </v-form>
-    </v-col>
-  </v-container>
-  <v-overlay
-    class="align-center justify-center text-center"
-    :model-value="!product.sell"
-    persistent
-  >
-    <h1 class="text-center text-red">已下架</h1>
-    <v-btn to="/">回首頁</v-btn>
-  </v-overlay>
+  <v-sheet class="pt-16">
+    <v-container>
+      <v-row class="product-container">
+        <v-col cols="12" class="text-center">
+          <h1 class="product-title">{{ product.name }}</h1>
+        </v-col>
+        <v-col cols="12" class="text-center">
+          <v-img
+            :src="product.image"
+            class="product-image"
+            height="400"
+          ></v-img>
+        </v-col>
+        <v-col cols="12" class="text-center">
+          <p class="product-price">${{ product.price }}</p>
+          <p class="product-description">{{ product.description }}</p>
+        </v-col>
+        <v-col cols="12" class="text-center">
+          <v-form
+            class="order-form"
+            :disabled="isSubmitting"
+            @submit.prevent="submit"
+          >
+            <v-text-field
+              type="number"
+              v-model.number="quantity.value"
+              :error-messages="quantity.errorMessage"
+              label="數量"
+              class="order-quantity"
+            ></v-text-field>
+            <v-btn
+              type="submit"
+              prepend-icon="mdi-cart"
+              :loading="isSubmitting"
+              class="order-button"
+            >
+              加入購物車
+            </v-btn>
+          </v-form>
+        </v-col>
+      </v-row>
+      <v-overlay
+        class="align-center justify-center text-center"
+        :model-value="!product.sell"
+        persistent
+      >
+        <h1 class="text-red">已下架</h1>
+        <v-btn to="/" class="return-button">回首頁</v-btn>
+      </v-overlay>
+    </v-container>
+  </v-sheet>
 </template>
 
 <script setup>
@@ -68,26 +89,32 @@ const product = ref({
 const load = async () => {
   try {
     const { data } = await api.get("/product/" + route.params.id);
-    product.value._id = data.result._id;
-    product.value.name = data.result.name;
-    product.value.price = data.result.price;
-    product.value.description = data.result.description;
-    product.value.image = data.result.image;
-    product.value.sell = data.result.sell;
-    product.value.category = data.result.category;
-
+    Object.assign(product.value, data.result);
     document.title = "購物網 | " + product.value.name;
   } catch (error) {
-    console.log(error);
     createSnackbar({
       text: error?.response?.data?.message || "發生錯誤",
-      snackbarProps: {
-        color: "red",
-      },
+      snackbarProps: { color: "red" },
     });
   }
 };
 load();
+
+const addToCart = async (product, quantity) => {
+  if (!user.isLogin) {
+    router.push("/login");
+    return;
+  }
+  try {
+    const result = await user.addCart_P(product, quantity);
+    createSnackbar({
+      text: result.text,
+      snackbarProps: { color: result.color },
+    });
+  } catch (error) {
+    createSnackbar({ text: "加入購物車失敗", snackbarProps: { color: "red" } });
+  }
+};
 
 const schema = yup.object({
   quantity: yup
@@ -96,25 +123,54 @@ const schema = yup.object({
     .required("數量必填")
     .min(1, "最少為 1"),
 });
+
 const { isSubmitting, handleSubmit } = useForm({
   validationSchema: schema,
-  initialValues: {
-    quantity: 1,
-  },
+  initialValues: { quantity: 1 },
 });
 const quantity = useField("quantity");
 
 const submit = handleSubmit(async (values) => {
-  if (!user.isLogin) {
-    router.push("/login");
-    return;
-  }
-  const result = await user.addCart(product.value._id, values.quantity);
-  createSnackbar({
-    text: result.text,
-    snackbarProps: {
-      color: result.color,
-    },
-  });
+  addToCart(product.value._id, values.quantity);
 });
 </script>
+
+<style scoped>
+.product-container {
+  max-width: 800px;
+  margin: auto;
+  padding: 2rem 0;
+}
+.product-title {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+.product-image {
+  border-radius: 10px;
+  margin-bottom: 1.5rem;
+}
+.product-price {
+  font-size: 1.8rem;
+  color: #ff5722;
+  margin-bottom: 0.5rem;
+}
+.product-description {
+  font-size: 1.2rem;
+  margin-bottom: 1.5rem;
+}
+.order-form {
+  max-width: 400px;
+  margin: auto;
+}
+.order-quantity {
+  margin-bottom: 1rem;
+}
+.order-button {
+  background-color: #1976d2;
+  color: white;
+}
+.return-button {
+  background-color: #ff5722;
+  color: white;
+}
+</style>

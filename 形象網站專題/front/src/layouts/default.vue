@@ -4,12 +4,11 @@
     <v-container>
       <v-row>
         <v-col v-for="section in menu" :key="section.name" cols="4">
-          <!-- <v-subheader>{{ section.name }}</v-subheader> -->
           <v-list>
             <v-list-item
               v-for="item in section.items"
               :key="item.text"
-              :to="item.to"
+              @click="navigate(item)"
               link
             >
               <v-list-item-content>
@@ -23,37 +22,40 @@
       </v-row>
     </v-container>
   </v-navigation-drawer>
-  <!-- Login & Sign up -->
-  <DialogComponent />
   <!-- Header -->
   <v-app-bar id="app-bar" flat height="100%">
-    <v-btn icon @click="drawer = !drawer">
+    <v-btn icon @click="drawer = !drawer" style="font-size: 24px">
       <v-icon>mdi-menu</v-icon>
     </v-btn>
     <v-spacer></v-spacer>
-    <div style="height: 100%; width: 200px" class="my-2 ms-8">
+    <div id="logo">
       <v-img
         src="../assets/LOGO/logo01.webp"
         @click="$router.push('/')"
       ></v-img>
     </div>
     <v-spacer></v-spacer>
-    <!-- Login & Sign up -->
-    <v-btn icon @click="$router.push('/member')" v-show="!user.isLogin">
-      <member-dialog></member-dialog>
-    </v-btn>
-    <v-btn v-if="user.isLogin" icon @click="logout">
-      <v-icon>mdi-account-arrow-right</v-icon></v-btn
-    >
-    <v-btn icon @click="$router.push('/shop/ticket')">
-      <v-icon>mdi-ticket</v-icon>
-    </v-btn>
-    <v-btn icon @click="$router.push('/shop/cart')">
-      <v-icon>mdi-cart</v-icon>
-    </v-btn>
+    <div>
+      <v-btn icon v-show="!user.isLogin">
+        <MemberDialog ref="showMemberDialog" />
+      </v-btn>
+      <v-btn
+        v-for="(button, index) in buttons"
+        :key="index"
+        icon
+        @click="handleClick(button.route)"
+        v-show="button.showCondition"
+      >
+        <v-icon>{{ button.icon }}</v-icon>
+        <component :is="button.component" v-if="button.component"></component>
+      </v-btn>
+    </div>
   </v-app-bar>
+
   <!-- Main Content -->
   <router-view />
+
+  <!-- Footer -->
   <v-footer id="footer">
     <v-container>
       <v-row class="text-center">
@@ -62,15 +64,9 @@
           <p>Müller Chamber Choir</p>
           <p>為台灣男聲合唱加油</p>
           <div class="mt-2">
-            <v-btn icon>
-              <v-icon size="x-large">mdi-facebook</v-icon>
-            </v-btn>
-            <v-btn icon>
-              <v-icon size="x-large">mdi-instagram</v-icon>
-            </v-btn>
-            <v-btn icon>
-              <v-icon size="x-large">mdi-youtube</v-icon>
-            </v-btn>
+            <v-btn icon><v-icon size="x-large">mdi-facebook</v-icon></v-btn>
+            <v-btn icon><v-icon size="x-large">mdi-instagram</v-icon></v-btn>
+            <v-btn icon><v-icon size="x-large">mdi-youtube</v-icon></v-btn>
           </div>
         </v-col>
         <v-col v-for="category in menu" :key="category.name" lg="2">
@@ -92,7 +88,32 @@
 </template>
 
 <script setup>
+import { ref, computed } from "vue";
+import { useRouter } from "vue-router";
+import { useUserStore } from "@/stores/user";
+import { useSnackbar } from "vuetify-use-dialog";
 import MemberDialog from "@/components/dialog/dialogMember.vue";
+
+// 抽屜狀態
+const drawer = ref(false);
+
+// 使用者商店
+const user = useUserStore();
+const router = useRouter();
+const createSnackbar = useSnackbar();
+
+// 按鈕資料
+const buttons = computed(() => [
+  { icon: "mdi-cart", route: "/shop/cart", showCondition: user.isLogin },
+  { icon: "mdi-clipboard", route: "/member", showCondition: user.isLogin },
+  {
+    icon: "mdi-account-arrow-right",
+    route: "/logout",
+    showCondition: user.isLogin,
+  },
+]);
+
+// 導航選單
 const menu = [
   {
     name: "關於我們",
@@ -113,26 +134,37 @@ const menu = [
   {
     name: "服務專區",
     items: [
-      { text: "會員登入", to: "/member" },
       { text: "出版專輯", to: "/shop/product" },
-      { text: "訂票查詢", to: "/shop/ticket" },
+      { text: "訂票查詢", to: "/shop/ticket", requiresAuth: true },
+      { text: "會員專區", to: "/member", requiresAuth: true },
     ],
   },
 ];
-const drawer = ref(false);
 
-// 登出
-import { useUserStore } from "@/stores/user";
-import { useSnackbar } from "vuetify-use-dialog";
-const createSnackbar = useSnackbar();
-const user = useUserStore();
+// 功能按鈕點擊處理
+const handleClick = (route) => {
+  if (route === "/logout") {
+    logout();
+  } else {
+    router.push(route);
+  }
+};
+
+// 導航按鈕點擊處理
+const navigate = (item) => {
+  if (item.requiresAuth && !user.isLogin) {
+    showMemberDialog();
+  } else {
+    router.push(item.to);
+  }
+};
+
+// 登出處理
 const logout = async () => {
   await user.logout();
   createSnackbar({
     text: "登出成功",
-    snackbarProps: {
-      color: "green",
-    },
+    snackbarProps: { color: "green" },
   });
 };
 </script>
@@ -142,6 +174,13 @@ const logout = async () => {
 #app-bar {
   background: rgba(236, 236, 236, 0.5);
   backdrop-filter: blur(10px);
+  padding: 0 24px;
+}
+#logo {
+  height: 100%;
+  width: 200px;
+  cursor: pointer;
+  padding: 8px 0;
 }
 #footer {
   background: lighten($third-color, 5%);

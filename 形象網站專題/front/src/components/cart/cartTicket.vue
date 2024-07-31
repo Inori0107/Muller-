@@ -7,11 +7,17 @@
           <span v-else class="text-red">{{ item.p_id.name }} (已下架)</span>
         </template>
         <template #[`item.quantity`]="{ item }">
-          <v-btn variant="text" color="red" @click="addCart(item.p_id._id, -1)"
+          <v-btn
+            variant="text"
+            color="red"
+            @click="addCart_T(item.p_id._id, -1)"
             >-</v-btn
           >
           <span>{{ item.quantity }}</span>
-          <v-btn variant="text" color="green" @click="addCart(item.p_id._id, 1)"
+          <v-btn
+            variant="text"
+            color="green"
+            @click="addCart_T(item.p_id._id, 1)"
             >+</v-btn
           >
         </template>
@@ -20,7 +26,7 @@
             variant="text"
             color="red"
             icon="mdi-delete"
-            @click="addCart(item.p_id._id, item.quantity * -1)"
+            @click="addCart_T(item.p_id._id, item.quantity * -1)"
           ></v-btn>
         </template>
       </v-data-table>
@@ -70,7 +76,7 @@ const headers = [
 
 const loadItems = async () => {
   try {
-    const { data } = await apiAuth.get("/user/cart");
+    const { data } = await apiAuth.get("/user/cart_T");
     items.value = data.result;
   } catch (error) {
     console.log(error);
@@ -98,7 +104,7 @@ const loading = ref(false);
 const checkout = async () => {
   loading.value = true;
 
-  const result = await user.checkout();
+  const result = await user.checkout_T();
 
   createSnackbar({
     text: result.text,
@@ -108,14 +114,14 @@ const checkout = async () => {
   });
 
   if (result.color === "green") {
-    router.push("/orders");
+    router.push("/member");
   }
 
   loading.value = false;
 };
 
-const addCart = async (product, quantity) => {
-  const result = await user.addCart(product, quantity);
+const addCart_T = async (product, quantity) => {
+  const result = await user.addCart_T(product, quantity);
   createSnackbar({
     text: result.text,
     snackbarProps: {

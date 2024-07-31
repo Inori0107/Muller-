@@ -1,6 +1,6 @@
 import User from "../models/user.js";
-// import Product from '../models/product.js'
-// import Ticket from '../models/ticket.js'
+import Product from "../models/product.js";
+import Ticket from "../models/ticket.js";
 import { StatusCodes } from "http-status-codes";
 import jwt from "jsonwebtoken";
 // 驗證購物車
@@ -130,7 +130,6 @@ export const logout = async (req, res) => {
 export const editCart_P = async (req, res) => {
 	try {
 		if (!validator.isMongoId(req.body.product)) throw new Error("ID");
-
 		const idx = req.user.cart_P.findIndex((item) => item.p_id.toString() === req.body.product);
 		if (idx > -1) {
 			// 購物車內有這個商品，檢查修改後的數量
@@ -185,7 +184,7 @@ export const editCart_P = async (req, res) => {
 		} else {
 			res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
 				success: false,
-				message: "未知錯誤"
+				message: "編輯未知錯誤"
 			});
 		}
 	}
@@ -203,7 +202,7 @@ export const getCart_P = async (req, res) => {
 	} catch (error) {
 		res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
 			success: false,
-			message: "未知錯誤"
+			message: "取得未知錯誤"
 		});
 	}
 };
