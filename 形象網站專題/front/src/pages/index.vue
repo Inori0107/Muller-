@@ -50,15 +50,10 @@
     </v-container>
     <v-sheet class="py-16">
       <v-container>
-        <v-row justify="center" align="center">
-          <v-col cols="12">
-            <Carousel
-              :images="images"
-              :slidesPerView="3"
-              :spaceBetween="20"
-              :loop="true"
-            />
-          </v-col>
+        <v-row>
+          <v-col><v-img src="../assets/home/review.webp"></v-img></v-col>
+          <v-col><v-img src="../assets/home/review.webp"></v-img></v-col>
+          <v-col><v-img src="../assets/home/review.webp"></v-img></v-col>
         </v-row>
       </v-container>
     </v-sheet>
@@ -67,11 +62,6 @@
 
 <script setup>
 import { definePage } from "vue-router/auto";
-import Carousel from "@/components/carousel/carouselImage.vue";
-import review from "../assets/home/review.webp";
-import video from "../assets/home/video.webp";
-import contact from "../assets/home/contact.jpg";
-
 definePage({
   meta: {
     title: "木樓合唱團",
@@ -79,7 +69,6 @@ definePage({
     admin: false,
   },
 });
-const images = [review, video, contact];
 </script>
 
 <style scoped>

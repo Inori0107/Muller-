@@ -1,38 +1,18 @@
-import Ticket from "../models/ticket.js";
 import Session from "../models/session.js";
 import { StatusCodes } from "http-status-codes";
 import validator from "validator";
 
-// 創建票券 API
+// 創建場次
 export const create = async (req, res) => {
 	try {
-		// 檢查系列ID是否有效
-		if (!validator.isMongoId(req.body.s_id)) throw new Error("INVALID_SESSION_ID");
-
-		// 檢查系列是否存在
-		const session = await Session.findById(req.body.s_id);
-		if (!session) throw new Error("SESSION_NOT_FOUND");
-
-		// 創建票券
-		const ticket = await Ticket.create(req.body);
-
+		const result = await Session.create(req.body);
 		res.status(StatusCodes.OK).json({
 			success: true,
-			message: "票券創建成功",
-			result: ticket
+			message: "場次創建成功",
+			result
 		});
 	} catch (error) {
-		if (error.message === "INVALID_SESSION_ID") {
-			res.status(StatusCodes.BAD_REQUEST).json({
-				success: false,
-				message: "無效的系列ID"
-			});
-		} else if (error.message === "SESSION_NOT_FOUND") {
-			res.status(StatusCodes.NOT_FOUND).json({
-				success: false,
-				message: "找不到對應的系列"
-			});
-		} else if (error.name === "ValidationError") {
+		if (error.name === "ValidationError") {
 			const key = Object.keys(error.errors)[0];
 			const message = error.errors[key].message;
 			res.status(StatusCodes.BAD_REQUEST).json({
@@ -42,13 +22,13 @@ export const create = async (req, res) => {
 		} else {
 			res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
 				success: false,
-				message: "SID未知錯誤"
+				message: "未知錯誤"
 			});
 		}
 	}
 };
 
-// 顯示全部票券
+// 獲取所有場次
 export const getAll = async (req, res) => {
 	try {
 		const sortBy = req.query.sortBy || "createdAt";
@@ -61,17 +41,12 @@ export const getAll = async (req, res) => {
 			$or: [{ name: regex }, { description: regex }]
 		};
 
-		if (req.query.price) {
-			filter.price = req.query.price;
-		}
-
-		const data = await Ticket.find(filter)
+		const data = await Session.find(filter)
 			.sort({ [sortBy]: sortOrder })
 			.skip((page - 1) * itemsPerPage)
-			.limit(itemsPerPage)
-			.populate("s_id", "name location date description");
+			.limit(itemsPerPage);
 
-		const total = await Ticket.countDocuments(filter);
+		const total = await Session.countDocuments(filter);
 		res.status(StatusCodes.OK).json({
 			success: true,
 			message: "",
@@ -81,7 +56,6 @@ export const getAll = async (req, res) => {
 			}
 		});
 	} catch (error) {
-		console.log(error);
 		res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
 			success: false,
 			message: "未知錯誤"
@@ -89,31 +63,26 @@ export const getAll = async (req, res) => {
 	}
 };
 
-// 編輯票券
+// 更新場次
 export const edit = async (req, res) => {
 	try {
-		if (!validator.isMongoId(req.body.ticket)) throw new Error("ID");
+		if (!validator.isMongoId(req.params.id)) throw new Error("ID");
 
-		const ticket = await Ticket.findById(req.body.ticket).orFail(new Error("NOT FOUND"));
-
-		Object.assign(ticket, req.body);
-		await ticket.save();
-
+		await Session.findByIdAndUpdate(req.params.id, req.body, { runValidators: true }).orFail(new Error("NOT FOUND"));
 		res.status(StatusCodes.OK).json({
 			success: true,
-			message: "票券更新成功",
-			result: ticket
+			message: "場次更新成功"
 		});
 	} catch (error) {
 		if (error.name === "CastError" || error.message === "ID") {
 			res.status(StatusCodes.BAD_REQUEST).json({
 				success: false,
-				message: "票券 ID 格式錯誤"
+				message: "場次 ID 格式錯誤"
 			});
 		} else if (error.message === "NOT FOUND") {
 			res.status(StatusCodes.NOT_FOUND).json({
 				success: false,
-				message: "查無票券"
+				message: "查無此場次"
 			});
 		} else if (error.name === "ValidationError") {
 			const key = Object.keys(error.errors)[0];
@@ -131,50 +100,42 @@ export const edit = async (req, res) => {
 	}
 };
 
-// 顯示單一票券
-export const get = async (req, res) => {
+// 刪除場次
+export const deleteSession = async (req, res) => {
 	try {
-		const sortBy = req.query.sortBy || "createdAt";
-		const sortOrder = req.query.sortOrder || "desc";
-		const itemsPerPage = req.query.itemsPerPage * 1 || 10;
-		const page = req.query.page * 1 || 1;
-		const regex = new RegExp(req.query.search || "", "i");
+		if (!validator.isMongoId(req.params.id)) throw new Error("ID");
 
-		const data = await Ticket.find({
-			sell: true,
-			$or: [{ name: regex }, { description: regex }]
-		})
-			.sort({ [sortBy]: sortOrder })
-			.skip((page - 1) * itemsPerPage)
-			.limit(itemsPerPage)
-			.populate("s_id", "name location date description");
-
-		const total = await Ticket.countDocuments({ sell: true });
+		await Session.findByIdAndDelete(req.params.id).orFail(new Error("NOT FOUND"));
 		res.status(StatusCodes.OK).json({
 			success: true,
-			message: "",
-			result: {
-				data,
-				total
-			}
+			message: "場次刪除成功"
 		});
 	} catch (error) {
-		console.log(error);
-		res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-			success: false,
-			message: "未知錯誤"
-		});
+		if (error.name === "CastError" || error.message === "ID") {
+			res.status(StatusCodes.BAD_REQUEST).json({
+				success: false,
+				message: "場次 ID 格式錯誤"
+			});
+		} else if (error.message === "NOT FOUND") {
+			res.status(StatusCodes.NOT_FOUND).json({
+				success: false,
+				message: "查無此場次"
+			});
+		} else {
+			res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+				success: false,
+				message: "未知錯誤"
+			});
+		}
 	}
 };
 
-// 查詢票券
-export const getId = async (req, res) => {
+// 根據 ID 獲取場次
+export const getById = async (req, res) => {
 	try {
-		// 驗證 ID 格式
 		if (!validator.isMongoId(req.params.id)) throw new Error("ID");
-		// 根據 ID 查找票券
-		const result = await Ticket.findById(req.params.id).populate("s_id", "name location date description").orFail(new Error("NOT FOUND"));
 
+		const result = await Session.findById(req.params.id).orFail(new Error("NOT FOUND"));
 		res.status(StatusCodes.OK).json({
 			success: true,
 			message: "",
@@ -184,12 +145,12 @@ export const getId = async (req, res) => {
 		if (error.name === "CastError" || error.message === "ID") {
 			res.status(StatusCodes.BAD_REQUEST).json({
 				success: false,
-				message: "票券 ID 格式錯誤"
+				message: "場次 ID 格式錯誤"
 			});
 		} else if (error.message === "NOT FOUND") {
 			res.status(StatusCodes.NOT_FOUND).json({
 				success: false,
-				message: "查無票券"
+				message: "查無此場次"
 			});
 		} else {
 			res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({

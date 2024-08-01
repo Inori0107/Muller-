@@ -1,7 +1,7 @@
 <template>
   <v-dialog max-width="1000" v-model="isActive" transition="dialog-transition">
     <template v-slot:activator="{ props: activatorProps }">
-      <v-btn v-bind="activatorProps" icon>
+      <v-btn v-bind="activatorProps" icon v-if="!user.isLogin">
         <v-icon>mdi-account-plus</v-icon>
       </v-btn>
     </template>
@@ -45,11 +45,14 @@
 import { ref } from "vue";
 import LoginForm from "@/components/form/login.vue";
 import SignUpForm from "@/components/form/signUp.vue";
+import { useUserStore } from "@/stores/user";
 
 // tab
 const isActive = ref(false);
 const tab = ref(0);
 const toggleTab = ref(true);
+
+const user = useUserStore();
 
 const handleLoginSuccess = () => {
   isActive.value = false;
@@ -57,9 +60,8 @@ const handleLoginSuccess = () => {
 const SignUp = () => {
   toggleTab.value = true;
 };
-</script>
-<script>
-export const showMemberDialog = () => {
-  isActive.value = true;
-};
+
+defineExpose({
+  isActive,
+});
 </script>

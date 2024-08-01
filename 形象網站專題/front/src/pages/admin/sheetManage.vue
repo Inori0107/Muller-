@@ -2,13 +2,13 @@
   <v-container>
     <v-row>
       <v-col cols="12">
-        <h1 class="text-center">樂譜管理</h1>
+        <h1 class="text-center">專輯管理</h1>
       </v-col>
       <v-col cols="12">
         <v-btn color="green" @click="openDialog(null)">新增商品</v-btn>
       </v-col>
       <v-col cols="12">
-        <v-data-table-server
+        <v-data-table
           v-model:items-per-page="tableItemsPerPage"
           v-model:sort-by="tableSortBy"
           v-model:page="tablePage"
@@ -32,7 +32,7 @@
             ></v-text-field>
           </template>
           <template #[`item.image`]="{ value }">
-            <v-img :src="value" height="250px"></v-img>
+            <v-img :src="value" height="150px" contain></v-img>
           </template>
           <template #[`item.sell`]="{ value }">
             <v-icon icon="mdi-check" v-if="value"></v-icon>
@@ -45,7 +45,7 @@
               @click="openDialog(item)"
             ></v-btn>
           </template>
-        </v-data-table-server>
+        </v-data-table>
       </v-col>
     </v-row>
   </v-container>
@@ -119,7 +119,7 @@ import { useSnackbar } from "vuetify-use-dialog";
 
 definePage({
   meta: {
-    title: "購物網 | 樂譜管理",
+    title: "木樓合唱團 | 專輯管理",
     login: true,
     admin: true,
   },

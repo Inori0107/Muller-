@@ -45,6 +45,12 @@ const menuItems = ref([
     size: "32px",
   },
   {
+    title: "票務管理",
+    icon: "mdi-ticket",
+    link: "/admin/ticketManage",
+    size: "32px",
+  },
+  {
     title: "專輯管理",
     icon: "mdi-shopping",
     link: "/admin/albumManage",
@@ -60,12 +66,6 @@ const menuItems = ref([
     title: "訂單管理",
     icon: "mdi-cart",
     link: "/admin/orderManage",
-    size: "32px",
-  },
-  {
-    title: "票務管理",
-    icon: "mdi-ticket",
-    link: "/admin/ticketManage",
     size: "32px",
   },
 ]);

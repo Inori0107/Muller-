@@ -8,7 +8,7 @@
             <v-list-item
               v-for="item in section.items"
               :key="item.text"
-              @click="navigate(item)"
+              :to="item.to"
               link
             >
               <v-list-item-content>
@@ -36,9 +36,7 @@
     </div>
     <v-spacer></v-spacer>
     <div>
-      <v-btn icon v-show="!user.isLogin">
-        <MemberDialog ref="showMemberDialog" />
-      </v-btn>
+      <MemberDialog ref="MemberDialogRef" />
       <v-btn
         v-for="(button, index) in buttons"
         :key="index"
@@ -51,7 +49,6 @@
       </v-btn>
     </div>
   </v-app-bar>
-
   <!-- Main Content -->
   <router-view />
 
@@ -88,8 +85,8 @@
 </template>
 
 <script setup>
-import { ref, computed } from "vue";
-import { useRouter } from "vue-router";
+import { ref, computed, watch } from "vue";
+import { useRouter, useRoute } from "vue-router";
 import { useUserStore } from "@/stores/user";
 import { useSnackbar } from "vuetify-use-dialog";
 import MemberDialog from "@/components/dialog/dialogMember.vue";
@@ -100,10 +97,14 @@ const drawer = ref(false);
 // 使用者商店
 const user = useUserStore();
 const router = useRouter();
+const route = useRoute();
 const createSnackbar = useSnackbar();
+
+const MemberDialogRef = ref(null);
 
 // 按鈕資料
 const buttons = computed(() => [
+  { icon: "mdi-account-cog", route: "/admin", showCondition: user.isAdmin },
   { icon: "mdi-cart", route: "/shop/cart", showCondition: user.isLogin },
   { icon: "mdi-clipboard", route: "/member", showCondition: user.isLogin },
   {
@@ -150,15 +151,6 @@ const handleClick = (route) => {
   }
 };
 
-// 導航按鈕點擊處理
-const navigate = (item) => {
-  if (item.requiresAuth && !user.isLogin) {
-    showMemberDialog();
-  } else {
-    router.push(item.to);
-  }
-};
-
 // 登出處理
 const logout = async () => {
   await user.logout();
@@ -167,6 +159,16 @@ const logout = async () => {
     snackbarProps: { color: "green" },
   });
 };
+
+watch(
+  () => route.query.login,
+  (login) => {
+    if (login) {
+      MemberDialogRef.value.isActive = true;
+      router.replace({ query: {} });
+    }
+  }
+);
 </script>
 
 <style lang="scss">

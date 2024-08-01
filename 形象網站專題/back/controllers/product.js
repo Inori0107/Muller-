@@ -83,6 +83,7 @@ export const edit = async (req, res) => {
 
 		req.body.image = req.file?.path;
 		// 更新資訊
+		console.log(req.body);
 		await Product.findByIdAndUpdate(req.params.id, req.body, { runValidators: true }).orFail(new Error("NOT FOUND"));
 
 		res.status(StatusCodes.OK).json({

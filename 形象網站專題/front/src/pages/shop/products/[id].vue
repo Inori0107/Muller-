@@ -16,6 +16,24 @@
           <p class="product-price">${{ product.price }}</p>
           <p class="product-description">{{ product.description }}</p>
         </v-col>
+        <v-col cols="12" v-if="product.song.length > 0">
+          <v-card class="product-songs">
+            <v-card-title>歌曲列表</v-card-title>
+            <v-card-text>
+              <v-row>
+                <v-col
+                  cols="12"
+                  v-for="(song, index) in product.song"
+                  :key="index"
+                >
+                  <v-card class="song-card">
+                    <v-card-text>{{ song }}</v-card-text>
+                  </v-card>
+                </v-col>
+              </v-row>
+            </v-card-text>
+          </v-card>
+        </v-col>
         <v-col cols="12" class="text-center">
           <v-form
             class="order-form"
@@ -84,6 +102,7 @@ const product = ref({
   image: "",
   sell: true,
   category: "",
+  song: [],
 });
 
 const load = async () => {
@@ -157,6 +176,12 @@ const submit = handleSubmit(async (values) => {
 .product-description {
   font-size: 1.2rem;
   margin-bottom: 1.5rem;
+}
+.product-songs {
+  margin-bottom: 1.5rem;
+}
+.song-card {
+  margin-bottom: 0.5rem;
 }
 .order-form {
   max-width: 400px;

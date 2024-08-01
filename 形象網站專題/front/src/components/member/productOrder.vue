@@ -1,23 +1,15 @@
 <template>
-  <v-container>
-    <v-row>
-      <v-col cols="12">
-        <h1 class="text-center">訂單管理</h1>
-      </v-col>
-      <v-divider></v-divider>
-      <v-col cols="12">
-        <v-data-table :items="items" :headers="headers">
-          <template #item.cart_P="{ item }">
-            <ul>
-              <li v-for="product in item.cart_P" :key="product._id">
-                {{ product.p_id.name }} * {{ product.quantity }}
-              </li>
-            </ul>
-          </template>
-        </v-data-table>
-      </v-col>
-    </v-row>
-  </v-container>
+  <v-col cols="12">
+    <v-data-table :items="items" :headers="headers">
+      <template #item.cart_P="{ item }">
+        <ul>
+          <li v-for="product in item.cart_P" :key="product._id">
+            {{ product.p_id.name }} * {{ product.quantity }}
+          </li>
+        </ul>
+      </template>
+    </v-data-table>
+  </v-col>
 </template>
 
 <script setup>
@@ -28,7 +20,7 @@ import { definePage } from "vue-router/auto";
 
 definePage({
   meta: {
-    title: "木樓合唱團 | 訂單管理",
+    title: "購物網 | 訂單管理",
     login: true,
     admin: true,
   },
@@ -40,7 +32,6 @@ const createSnackbar = useSnackbar();
 const items = ref([]);
 const headers = [
   { title: "編號", key: "_id" },
-  { title: "帳號", key: "user.account" },
   {
     title: "日期",
     key: "createdAt",
@@ -60,7 +51,7 @@ const headers = [
 
 const loadItems = async () => {
   try {
-    const { data } = await apiAuth.get("/order/product/all");
+    const { data } = await apiAuth.get("/order/product");
     items.value = data.result;
   } catch (error) {
     console.log(error);

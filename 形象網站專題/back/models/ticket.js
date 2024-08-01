@@ -1,33 +1,30 @@
-import { Schema, model } from 'mongoose'
+import { Schema, model, ObjectId } from "mongoose";
 
 const schema = new Schema(
-  {
-    name: {
-      type: String,
-      required: [true, '票券名稱必填']
-    },
-    price: {
-      type: Number,
-      required: [true, '票券價格必填'],
-      min: [0, '票價價格不能小於 0']
-    },
-    date: {
-      type: Date,
-      required: [true, '票券日期必填']
-    },
-    description: {
-      type: String,
-      required: [true, '票券位置必填']
-    },
-    sell: {
-      type: Boolean,
-      required: [true, '票券上架狀態必填']
-    }
-  },
-  {
-    timestamps: true,
-    versionKey: false
-  }
-)
+	{
+		s_id: {
+			type: ObjectId,
+			ref: "sessions",
+			required: [true, "系列資訊必填"]
+		},
+		name: {
+			type: String,
+			required: [true, "票券名稱必填"]
+		},
+		price: {
+			type: Number,
+			required: [true, "票券價格必填"],
+			min: [0, "票價價格不能小於 0"]
+		},
+		seat_info: {
+			type: String,
+			required: [true, "票券位置必填"]
+		}
+	},
+	{
+		timestamps: true,
+		versionKey: false
+	}
+);
 
-export default model('tickets', schema)
+export default model("tickets", schema);

@@ -2,7 +2,7 @@
   <v-main>
     <v-sheet class="pt-16">
       <v-container class="mt-8">
-        <v-img src="../../assets/album/heroPic.webp"></v-img>
+        <v-img src="../../assets/home/ticket_bg.webp"></v-img>
       </v-container>
     </v-sheet>
     <v-container>

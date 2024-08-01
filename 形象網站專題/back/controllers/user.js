@@ -1,6 +1,7 @@
 import User from "../models/user.js";
 import Product from "../models/product.js";
 import Ticket from "../models/ticket.js";
+import Session from "../models/session.js";
 import { StatusCodes } from "http-status-codes";
 import jwt from "jsonwebtoken";
 // 驗證購物車
@@ -52,8 +53,8 @@ export const login = async (req, res) => {
 				token,
 				account: req.user.account,
 				role: req.user.role,
-				cart_P: req.user.cart_P_Quantity,
-				cart_T: req.user.cart_T_Quantity
+				cart_P: req.user.productQuantity,
+				cart_T: req.user.ticketQuantity
 			}
 		});
 	} catch (error) {
@@ -156,7 +157,7 @@ export const editCart_P = async (req, res) => {
 		res.status(StatusCodes.OK).json({
 			success: true,
 			message: "",
-			result: req.user.cart_P_Quantity
+			result: req.user.productQuantity
 		});
 	} catch (error) {
 		if (error.name === "CastError" || error.message === "ID") {
@@ -210,9 +211,9 @@ export const getCart_P = async (req, res) => {
 // 編輯票券購物車
 export const editCart_T = async (req, res) => {
 	try {
-		if (!validator.isMongoId(req.body.product)) throw new Error("ID");
+		if (!validator.isMongoId(req.body.ticket)) throw new Error("ID");
 
-		const idx = req.user.cart_T.findIndex((item) => item.p_id.toString() === req.body.product);
+		const idx = req.user.cart_T.findIndex((item) => item.p_id.toString() === req.body.ticket);
 		if (idx > -1) {
 			// 購物車內有這個商品，檢查修改後的數量
 			const quantity = req.user.cart_T[idx].quantity + parseInt(req.body.quantity);
@@ -225,11 +226,11 @@ export const editCart_T = async (req, res) => {
 			}
 		} else {
 			// 購物車內沒這個商品，檢查商品是否存在
-			const product = await Product.findById(req.body.product).orFail(new Error("NOT FOUND"));
-			if (!product.sell) throw new Error("SELL");
+			const ticket = await Ticket.findById(req.body.ticket).orFail(new Error("NOT FOUND"));
+			if (!ticket.sell) throw new Error("SELL");
 
 			req.user.cart_T.push({
-				p_id: product._id,
+				t_id: ticket._id,
 				quantity: req.body.quantity
 			});
 		}
@@ -238,7 +239,7 @@ export const editCart_T = async (req, res) => {
 		res.status(StatusCodes.OK).json({
 			success: true,
 			message: "",
-			result: req.user.cart_T_Quantity
+			result: req.user.ticketQuantity
 		});
 	} catch (error) {
 		if (error.name === "CastError" || error.message === "ID") {
@@ -286,5 +287,90 @@ export const getCart_T = async (req, res) => {
 			success: false,
 			message: "未知錯誤"
 		});
+	}
+};
+
+// 取得用戶的場次資訊
+export const getSessions = async (req, res) => {
+	try {
+		const sessions = await Session.find({ u_id: req.user._id });
+		res.status(StatusCodes.OK).json({
+			success: true,
+			message: "",
+			result: sessions
+		});
+	} catch (error) {
+		res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+			success: false,
+			message: "未知錯誤"
+		});
+	}
+};
+
+// 修改已存在的場次資訊
+export const editSession = async (req, res) => {
+	try {
+		if (!validator.isMongoId(req.params.id)) throw new Error("ID");
+
+		await Session.findByIdAndUpdate({ _id: req.params.id, u_id: req.user._id }, req.body, { runValidators: true }).orFail(new Error("NOT FOUND"));
+
+		res.status(StatusCodes.OK).json({
+			success: true,
+			message: "場次更新成功"
+		});
+	} catch (error) {
+		if (error.name === "CastError" || error.message === "ID") {
+			res.status(StatusCodes.BAD_REQUEST).json({
+				success: false,
+				message: "場次 ID 格式錯誤"
+			});
+		} else if (error.message === "NOT FOUND") {
+			res.status(StatusCodes.NOT_FOUND).json({
+				success: false,
+				message: "查無此場次"
+			});
+		} else if (error.name === "ValidationError") {
+			const key = Object.keys(error.errors)[0];
+			const message = error.errors[key].message;
+			res.status(StatusCodes.BAD_REQUEST).json({
+				success: false,
+				message
+			});
+		} else {
+			res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+				success: false,
+				message: "未知錯誤"
+			});
+		}
+	}
+};
+
+// 刪除場次
+export const deleteSession = async (req, res) => {
+	try {
+		if (!validator.isMongoId(req.params.id)) throw new Error("ID");
+
+		await Session.findByIdAndDelete({ _id: req.params.id, u_id: req.user._id }).orFail(new Error("NOT FOUND"));
+		res.status(StatusCodes.OK).json({
+			success: true,
+			message: "場次刪除成功"
+		});
+	} catch (error) {
+		if (error.name === "CastError" || error.message === "ID") {
+			res.status(StatusCodes.BAD_REQUEST).json({
+				success: false,
+				message: "場次 ID 格式錯誤"
+			});
+		} else if (error.message === "NOT FOUND") {
+			res.status(StatusCodes.NOT_FOUND).json({
+				success: false,
+				message: "查無此場次"
+			});
+		} else {
+			res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+				success: false,
+				message: "未知錯誤"
+			});
+		}
 	}
 };

@@ -11,9 +11,7 @@
     </v-sheet>
 
     <v-container v-if="activeContent === 'orders'">
-      <v-col cols="12">
-        <h1 class="text-center">商品清單</h1>
-      </v-col>
+      <ProductOrder />
     </v-container>
 
     <v-container v-else-if="activeContent === 'dream'">
@@ -33,11 +31,12 @@
 <script setup>
 import { definePage } from "vue-router/auto";
 import { ref } from "vue";
+import ProductOrder from "@/components/member/productOrder.vue";
 
 definePage({
   meta: {
     title: "木樓合唱團 | 會員",
-    login: false,
+    login: true,
     admin: false,
   },
 });

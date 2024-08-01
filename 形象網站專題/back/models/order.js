@@ -23,16 +23,8 @@ const ticketSchema = new Schema({
 	},
 	quantity: {
 		type: Number,
-		required: [true, "使用者購物車票券數量必填"],
-		min: [1, "使用者購物車票券數量不符"]
-	},
-	description: {
-		type: String,
-		required: [true, "使用者購物車票券描述必填"]
-	},
-	date: {
-		type: Date,
-		required: [true, "使用者購物車票券日期必填"]
+		required: [true, "使用者購物車商品數量必填"],
+		min: [1, "使用者購物車商品數量不符"]
 	}
 });
 
@@ -46,31 +38,25 @@ const schema = new Schema(
 		},
 		cart_P: {
 			type: [productSchema],
-			default: [],
-			validate: {
-				validator(value) {
-					// 如果 cart_P 和 cart_T 都是空的，返回 false
-					return this.cart_P.length > 0 || this.cart_T.length > 0;
-				},
-				message: "訂單購物車商品或票券必須至少有一項"
-			}
+			default: []
 		},
 		cart_T: {
 			type: [ticketSchema],
-			default: [],
-			validate: {
-				validator(value) {
-					// 如果 cart_P 和 cart_T 都是空的，返回 false
-					return this.cart_P.length > 0 || this.cart_T.length > 0;
-				},
-				message: "訂單購物車商品或票券必須至少有一項"
-			}
+			default: []
 		}
 	},
 	{
-		versionKey: false,
-		timestamps: true
+		timestamps: true,
+		versionKey: false
 	}
 );
+
+schema.pre("validate", function (next) {
+	if (this.cart_P.length === 0 && this.cart_T.length === 0) {
+		this.invalidate("cart_P", "訂單購物車商品或票券必須至少有一項");
+		this.invalidate("cart_T", "訂單購物車商品或票券必須至少有一項");
+	}
+	next();
+});
 
 export default model("orders", schema);

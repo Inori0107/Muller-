@@ -18,18 +18,15 @@ const productSchema = Schema({
 });
 // 票購物車
 const ticketSchema = Schema({
-	date: {
-		type: Date,
-		required: [true, "使用者購物車票券日期必填"]
+	t_id: {
+		type: ObjectId,
+		ref: "tickets",
+		required: [true, "使用者購物車票券必填"]
 	},
 	quantity: {
 		type: Number,
-		required: [true, "使用者購物車票券數量必填"],
-		min: [1, "使用者購物車票券數量不符"]
-	},
-	description: {
-		type: String,
-		required: [true, "使用者購物車票券描述必填"]
+		required: [true, "使用者購物車商品數量必填"],
+		min: [1, "使用者購物車商品數量不符"]
 	}
 });
 
@@ -109,8 +106,9 @@ schema.virtual("productQuantity").get(function () {
 		return total + current.quantity;
 	}, 0);
 });
+
 // 回傳票券總數
-schema.virtual("productQuantity").get(function () {
+schema.virtual("ticketQuantity").get(function () {
 	const user = this;
 	return user.cart_T.reduce((total, current) => {
 		return total + current.quantity;
