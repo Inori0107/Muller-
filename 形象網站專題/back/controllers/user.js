@@ -293,7 +293,7 @@ export const getCart_T = async (req, res) => {
 // 取得用戶的場次資訊
 export const getSessions = async (req, res) => {
 	try {
-		const sessions = await Session.find({ u_id: req.user._id });
+		const sessions = await Session.find();
 		res.status(StatusCodes.OK).json({
 			success: true,
 			message: "",

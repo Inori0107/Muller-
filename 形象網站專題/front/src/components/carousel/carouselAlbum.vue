@@ -42,8 +42,8 @@ import { useApi } from "@/composables/axios";
 import { useSnackbar } from "vuetify-use-dialog";
 import { Swiper, SwiperSlide } from "swiper/vue";
 import "swiper/swiper-bundle.css";
-// import { Autoplay } from "swiper/modules";
-// const modules = [Autoplay];
+import { Autoplay } from "swiper/modules";
+const modules = [Autoplay];
 
 definePage({
   meta: {

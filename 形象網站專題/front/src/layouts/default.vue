@@ -1,26 +1,36 @@
 <template>
   <!-- Navigation Drawer -->
-  <v-navigation-drawer v-model="drawer" temporary location="top">
-    <v-container>
-      <v-row>
-        <v-col v-for="section in menu" :key="section.name" cols="4">
-          <v-list>
-            <v-list-item
-              v-for="item in section.items"
-              :key="item.text"
-              :to="item.to"
-              link
-            >
-              <v-list-item-content>
-                <v-list-item-title class="text-center">{{
-                  item.text
-                }}</v-list-item-title>
-              </v-list-item-content>
-            </v-list-item>
-          </v-list>
-        </v-col>
-      </v-row>
-    </v-container>
+  <v-navigation-drawer
+    v-model="drawer"
+    temporary
+    location="top"
+    class="nav h-100"
+  >
+    <v-row justify="center" no-gutters>
+      <v-col class="ps-7 pt-5 position-absolute">
+        <v-btn variant icon @click="drawer = false" style="font-size: 24px">
+          <v-icon>mdi-close</v-icon>
+        </v-btn>
+      </v-col>
+      <v-col v-for="section in menu" :key="section.name" cols="3" class="pt-16">
+        <v-list class="mt-16 pt-16">
+          <v-list-item
+            v-for="item in section.items"
+            :key="item.text"
+            :to="item.to"
+            link
+            class="list"
+            variant="plain"
+          >
+            <v-list-item-content>
+              <v-list-item-title class="text-center" style="font-size: 1.5rem"
+                ><b>{{ item.text }}</b></v-list-item-title
+              >
+            </v-list-item-content>
+          </v-list-item>
+        </v-list>
+      </v-col>
+    </v-row>
   </v-navigation-drawer>
   <!-- Header -->
   <v-app-bar id="app-bar" flat height="100%">
@@ -49,9 +59,8 @@
       </v-btn>
     </div>
   </v-app-bar>
-  <!-- Main Content -->
+  <!-- Main content -->
   <router-view />
-
   <!-- Footer -->
   <v-footer id="footer">
     <v-container>
@@ -99,7 +108,6 @@ const user = useUserStore();
 const router = useRouter();
 const route = useRoute();
 const createSnackbar = useSnackbar();
-
 const MemberDialogRef = ref(null);
 
 // 按鈕資料
@@ -173,6 +181,24 @@ watch(
 
 <style lang="scss">
 @import "../styles/settings.scss";
+.nav {
+  background: url("../assets/home/nav_bg.png") no-repeat center top,
+    radial-gradient(circle, rgba(245, 245, 245, 0.9), rgba(245, 245, 245, 0.7));
+  backdrop-filter: blur(15px);
+  background-size: cover;
+}
+
+.list {
+  min-width: 100px;
+  height: 100px;
+  background: rgba(255, 255, 255, 0.9); /* 與上傳圖片顏色相近 */
+  margin: 100px 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 添加柔邊陰影效果 */
+  &:hover {
+    background: rgba(230, 230, 230, 0.9); /* 懸停時背景顏色變化 */
+  }
+}
+
 #app-bar {
   background: rgba(236, 236, 236, 0.5);
   backdrop-filter: blur(10px);

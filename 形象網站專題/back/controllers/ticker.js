@@ -42,7 +42,7 @@ export const create = async (req, res) => {
 		} else {
 			res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
 				success: false,
-				message: "SID未知錯誤"
+				message: "未知錯誤"
 			});
 		}
 	}
@@ -92,9 +92,9 @@ export const getAll = async (req, res) => {
 // 編輯票券
 export const edit = async (req, res) => {
 	try {
-		if (!validator.isMongoId(req.body.ticket)) throw new Error("ID");
+		if (!validator.isMongoId(req.params.id)) throw new Error("ID");
 
-		const ticket = await Ticket.findById(req.body.ticket).orFail(new Error("NOT FOUND"));
+		const ticket = await Ticket.findById(req.params.id).orFail(new Error("NOT FOUND"));
 
 		Object.assign(ticket, req.body);
 		await ticket.save();
@@ -134,44 +134,9 @@ export const edit = async (req, res) => {
 // 顯示單一票券
 export const get = async (req, res) => {
 	try {
-		const sortBy = req.query.sortBy || "createdAt";
-		const sortOrder = req.query.sortOrder || "desc";
-		const itemsPerPage = req.query.itemsPerPage * 1 || 10;
-		const page = req.query.page * 1 || 1;
-		const regex = new RegExp(req.query.search || "", "i");
-
-		const data = await Ticket.find({
-			sell: true,
-			$or: [{ name: regex }, { description: regex }]
-		})
-			.sort({ [sortBy]: sortOrder })
-			.skip((page - 1) * itemsPerPage)
-			.limit(itemsPerPage)
-			.populate("s_id", "name location date description");
-
-		const total = await Ticket.countDocuments({ sell: true });
-		res.status(StatusCodes.OK).json({
-			success: true,
-			message: "",
-			result: {
-				data,
-				total
-			}
-		});
-	} catch (error) {
-		console.log(error);
-		res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-			success: false,
-			message: "未知錯誤"
-		});
-	}
-};
-
-// 查詢票券
-export const getId = async (req, res) => {
-	try {
 		// 驗證 ID 格式
 		if (!validator.isMongoId(req.params.id)) throw new Error("ID");
+
 		// 根據 ID 查找票券
 		const result = await Ticket.findById(req.params.id).populate("s_id", "name location date description").orFail(new Error("NOT FOUND"));
 

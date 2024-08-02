@@ -47,7 +47,7 @@ const menuItems = ref([
   {
     title: "票務管理",
     icon: "mdi-ticket",
-    link: "/admin/ticketManage",
+    link: "/admin/sessionManage",
     size: "32px",
   },
   {

@@ -6,6 +6,7 @@ import validator from "validator";
 export const create = async (req, res) => {
 	try {
 		const result = await Session.create(req.body);
+		console.log(result);
 		res.status(StatusCodes.OK).json({
 			success: true,
 			message: "場次創建成功",
