@@ -31,7 +31,7 @@
         <h1 class="leader_text">Our Services</h1>
       </v-col>
     </v-container>
-    <v-sheet class="py-16 ourService">
+    <v-sheet class="py-16">
       <v-container>
         <v-row justify="center" align="center">
           <v-col cols="5" class="shop">
@@ -41,7 +41,7 @@
           </v-col>
           <v-col cols="5" class="shop">
             <router-link to="/shop/ticket">
-              <v-img src="../assets/home/gototicket.png"></v-img>
+              <v-img src="../assets/home/gototicket.jpg"></v-img>
             </router-link>
           </v-col>
         </v-row>
@@ -84,6 +84,7 @@ definePage({
   background-attachment: fixed;
 }
 .shop {
+  height: 550px;
   margin: 0 30px;
   padding: 30px;
   /* background: rgba(0, 0, 0, 0.4); */

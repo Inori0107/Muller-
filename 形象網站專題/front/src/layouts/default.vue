@@ -20,7 +20,6 @@
             :to="item.to"
             link
             class="list"
-            variant="plain"
           >
             <v-list-item-content>
               <v-list-item-title class="text-center" style="font-size: 1.5rem"
@@ -191,11 +190,12 @@ watch(
 .list {
   min-width: 100px;
   height: 100px;
-  background: rgba(255, 255, 255, 0.9); /* 與上傳圖片顏色相近 */
+  background: rgba(255, 255, 255); /* 與上傳圖片顏色相近 */
   margin: 100px 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 添加柔邊陰影效果 */
+  opacity: 0.8;
   &:hover {
-    background: rgba(230, 230, 230, 0.9); /* 懸停時背景顏色變化 */
+    background: rgba(230, 230, 230); /* 懸停時背景顏色變化 */
   }
 }
 

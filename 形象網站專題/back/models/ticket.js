@@ -15,10 +15,6 @@ const schema = new Schema(
 			type: Number,
 			required: [true, "票券價格必填"],
 			min: [0, "票價價格不能小於 0"]
-		},
-		seat_info: {
-			type: String,
-			required: [true, "票券位置必填"]
 		}
 	},
 	{

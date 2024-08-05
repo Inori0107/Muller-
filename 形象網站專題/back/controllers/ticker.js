@@ -8,7 +8,7 @@ export const create = async (req, res) => {
 	try {
 		// 檢查系列ID是否有效
 		if (!validator.isMongoId(req.body.s_id)) throw new Error("INVALID_SESSION_ID");
-
+		console.log(req.body);
 		// 檢查系列是否存在
 		const session = await Session.findById(req.body.s_id);
 		if (!session) throw new Error("SESSION_NOT_FOUND");
@@ -51,27 +51,25 @@ export const create = async (req, res) => {
 // 顯示全部票券
 export const getAll = async (req, res) => {
 	try {
-		const sortBy = req.query.sortBy || "createdAt";
-		const sortOrder = req.query.sortOrder || "desc";
-		const itemsPerPage = req.query.itemsPerPage * 1 || 10;
-		const page = req.query.page * 1 || 1;
 		const regex = new RegExp(req.query.search || "", "i");
 
+		// 構建篩選條件
 		const filter = {
-			$or: [{ name: regex }, { description: regex }]
+			$or: [{ name: regex }]
 		};
 
-		if (req.query.price) {
-			filter.price = req.query.price;
+		// 如果有指定的 s_id，則添加到篩選條件
+		if (req.query.s_id) {
+			filter.s_id = req.query.s_id;
 		}
 
-		const data = await Ticket.find(filter)
-			.sort({ [sortBy]: sortOrder })
-			.skip((page - 1) * itemsPerPage)
-			.limit(itemsPerPage)
-			.populate("s_id", "name location date description");
+		// 查詢票券數據
+		const data = await Ticket.find(filter).populate("s_id", "name location date description");
 
+		// 計算符合條件的總數量
 		const total = await Ticket.countDocuments(filter);
+
+		// 返回查詢結果
 		res.status(StatusCodes.OK).json({
 			success: true,
 			message: "",
@@ -131,19 +129,37 @@ export const edit = async (req, res) => {
 	}
 };
 
-// 顯示單一票券
+// 顯示特定場次的票券或單一票券
 export const get = async (req, res) => {
 	try {
-		// 驗證 ID 格式
-		if (!validator.isMongoId(req.params.id)) throw new Error("ID");
+		const { id, s_id } = req.query;
 
-		// 根據 ID 查找票券
-		const result = await Ticket.findById(req.params.id).populate("s_id", "name location date description").orFail(new Error("NOT FOUND"));
+		if (id && !validator.isMongoId(id)) throw new Error("ID");
+		if (s_id && !validator.isMongoId(s_id)) throw new Error("SID");
 
+		let filter = {};
+
+		if (id) {
+			// 根據 ID 查找單一票券
+			const ticket = await Ticket.findById(id).populate("s_id", "name location date description").orFail(new Error("NOT FOUND"));
+			return res.status(StatusCodes.OK).json({
+				success: true,
+				message: "",
+				result: ticket
+			});
+		}
+
+		if (s_id) {
+			// 根據 s_id 查找票券
+			filter.s_id = s_id;
+		}
+
+		// 查找符合條件的票券
+		const tickets = await Ticket.find(filter).populate("s_id", "name location date description");
 		res.status(StatusCodes.OK).json({
 			success: true,
 			message: "",
-			result
+			result: tickets
 		});
 	} catch (error) {
 		if (error.name === "CastError" || error.message === "ID") {
@@ -155,6 +171,11 @@ export const get = async (req, res) => {
 			res.status(StatusCodes.NOT_FOUND).json({
 				success: false,
 				message: "查無票券"
+			});
+		} else if (error.message === "SID") {
+			res.status(StatusCodes.BAD_REQUEST).json({
+				success: false,
+				message: "系列 ID 格式錯誤"
 			});
 		} else {
 			res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({

@@ -25,22 +25,17 @@
           </v-row>
         </v-col>
       </v-row>
-      <TicketManage v-if="selectedSessionId" :sessionId="selectedSessionId" />
+      <v-row>
+        <v-col>
+          <div style="width: 300px">
+            <SeatMap />
+          </div>
+        </v-col>
+        <v-col>
+          <TicketManage v-if="selectedSessionId" :sessionId="selectedSessionId"
+        /></v-col>
+      </v-row>
     </v-container>
-    <v-container class="h-100"></v-container>
-    <v-container class="h-100"></v-container>
-    <v-container class="h-100"></v-container>
-    <v-container class="h-100"></v-container>
-    <v-container class="h-100"></v-container>
-    <v-container class="h-100"></v-container>
-    <v-container class="h-100"></v-container>
-    <v-container class="h-100"></v-container>
-    <v-container class="h-100"></v-container>
-    <v-container class="h-100"></v-container>
-    <v-container class="h-100"></v-container>
-    <v-container class="h-100"></v-container>
-    <v-container class="h-100"></v-container>
-    <v-container class="h-100"></v-container>
   </v-main>
 </template>
 
@@ -49,6 +44,7 @@ import { ref } from "vue";
 import { useApi } from "@/composables/axios";
 import { useSnackbar } from "vuetify-use-dialog";
 import TicketManage from "@/components/ticket/tickets.vue";
+import SeatMap from "@/components/ticket/seatmap.vue"; // 導入新元件
 
 const { api } = useApi();
 const createSnackbar = useSnackbar();
