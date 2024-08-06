@@ -4,7 +4,9 @@
     v-model="drawer"
     temporary
     location="top"
-    class="nav h-100"
+    class="nav"
+    floating
+    elevation="0"
   >
     <v-row justify="center" no-gutters>
       <v-col class="ps-7 pt-5 position-absolute">
@@ -12,8 +14,13 @@
           <v-icon>mdi-close</v-icon>
         </v-btn>
       </v-col>
-      <v-col v-for="section in menu" :key="section.name" cols="3" class="pt-16">
-        <v-list class="mt-16 pt-16">
+      <v-col
+        v-for="section in menu"
+        :key="section.name"
+        cols="3"
+        class="btn_bg"
+      >
+        <v-list class="py-5">
           <v-list-item
             v-for="item in section.items"
             :key="item.text"
@@ -52,6 +59,7 @@
         icon
         @click="handleClick(button.route)"
         v-show="button.showCondition"
+        ripple="false"
       >
         <v-icon>{{ button.icon }}</v-icon>
         <component :is="button.component" v-if="button.component"></component>
@@ -181,22 +189,22 @@ watch(
 <style lang="scss">
 @import "../styles/settings.scss";
 .nav {
-  background: url("../assets/home/nav_bg.png") no-repeat center top,
-    radial-gradient(circle, rgba(245, 245, 245, 0.9), rgba(245, 245, 245, 0.7));
-  backdrop-filter: blur(15px);
-  background-size: cover;
+  background: linear-gradient(white 30%, transparent);
 }
-
 .list {
-  min-width: 100px;
   height: 100px;
   background: rgba(255, 255, 255); /* 與上傳圖片顏色相近 */
-  margin: 100px 10px;
+  margin: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 添加柔邊陰影效果 */
   opacity: 0.8;
   &:hover {
     background: rgba(230, 230, 230); /* 懸停時背景顏色變化 */
   }
+}
+.btn_bg {
+  background: url(../assets/home/btn.gif) no-repeat;
+  background-size: contain;
+  background-position: center;
 }
 
 #app-bar {

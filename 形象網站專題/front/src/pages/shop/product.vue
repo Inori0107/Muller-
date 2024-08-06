@@ -1,7 +1,7 @@
 <template>
   <v-main id="bg">
-    <v-sheet class="pt-16">
-      <v-container class="mt-8">
+    <v-sheet class="py-16">
+      <v-container class="mt-16">
         <v-img src="../../assets/album/heroPic.webp"></v-img>
       </v-container>
     </v-sheet>

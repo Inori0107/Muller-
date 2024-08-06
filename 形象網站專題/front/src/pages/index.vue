@@ -18,13 +18,32 @@
       </v-col>
     </v-container>
     <v-sheet class="py-16">
+      <h2 class="text-center mb-8">
+        「木樓」之名，源自於建國中學古老的木造音樂教室。<br />
+        藉著歌唱，在各自的生命經歷裡找到相同的感動，也譜出一段段令人動容的音樂記憶。<br />
+        這是木樓的精神根基，也是前進的動力。
+      </h2>
       <v-container>
-        <router-link to="/introduce">
-          <v-img src="../assets/home/about.jpeg"></v-img>
-        </router-link>
+        <v-row>
+          <v-col
+            v-for="(image, index) in images"
+            :key="index"
+            :class="[
+              'image-col',
+              {
+                expanded: activeIndex === index,
+              },
+            ]"
+            @mouseover="expandImage(index)"
+            @mouseleave="resetImages"
+          >
+            <router-link to="/introduce">
+              <v-img :src="image.src" height="400" cover></v-img>
+            </router-link>
+          </v-col>
+        </v-row>
       </v-container>
     </v-sheet>
-
     <!-- our services -->
     <v-container>
       <v-col cols="12" class="text-center text-white">
@@ -67,6 +86,10 @@
 
 <script setup>
 import { definePage } from "vue-router/auto";
+import { ref } from "vue";
+import pianist from "../assets/about/pianist.webp";
+import choir from "../assets/home/bg.jpg";
+import conductor from "../assets/about/conductor.png";
 
 definePage({
   meta: {
@@ -75,6 +98,15 @@ definePage({
     admin: false,
   },
 });
+const images = [{ src: pianist }, { src: choir }, { src: conductor }];
+
+const activeIndex = ref(null);
+const expandImage = (index) => {
+  activeIndex.value = index;
+};
+const resetImages = () => {
+  activeIndex.value = null;
+};
 </script>
 
 <style scoped>
@@ -83,24 +115,30 @@ definePage({
   background-size: cover;
   background-attachment: fixed;
 }
+
+/* about us */
+.image-col {
+  transition: 0.5s ease;
+  cursor: pointer;
+  border-radius: 5px;
+}
+.image-col.expanded {
+  flex: 3 0 0;
+}
+
+/* our service */
 .shop {
-  height: 550px;
   margin: 0 30px;
   padding: 30px;
-  /* background: rgba(0, 0, 0, 0.4); */
   border-radius: 5px;
   overflow: hidden;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition: 0.3s ease;
 }
 .shop:hover {
-  transform: translateY(-10px);
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
-.ourService {
-  /* background: rgb(255, 255, 255, 0.5); */
-  backdrop-filter: blur(5px);
-}
+
 .leader_text {
   text-shadow: #c8c8c8 1px 1px 0px, #b4b4b4 0px 2px 0px, #a0a0a0 0px 3px 0px,
     rgba(140, 140, 140, 0.498039) 0px 4px 0px, #787878 0px 0px 0px,

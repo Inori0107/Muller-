@@ -52,3 +52,5 @@ const showContent = (content) => {
   activeContent.value = content;
 };
 </script>
+
+<style scoped></style>

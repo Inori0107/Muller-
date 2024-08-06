@@ -2,15 +2,13 @@
   <v-main id="bg">
     <v-sheet class="pt-16">
       <v-container class="mt-8">
-        <v-img src="../assets/review/reviewHome.webp"></v-img>
+        <v-img src="../assets/review/review_bg.png"></v-img>
       </v-container>
     </v-sheet>
     <!-- Review -->
     <v-container class="text-center mb-4 pb-4">
       <h1 class="pb-4">演出回顧</h1>
-      <div class="pa-8">
-        <CarouselImage />
-      </div>
+      <CarouselImage />
       <div class="mt-5 pt-5">
         <DialogComponent title="關於我們">
           <!-- Timeline -->
@@ -155,8 +153,6 @@ const videos = [
   background-attachment: fixed;
 }
 :deep(.carousel-image) {
-  width: 100%;
-  height: auto;
   transition: transform 0.3s ease;
 }
 
