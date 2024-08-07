@@ -22,7 +22,7 @@
 
     <v-container v-else-if="activeContent === 'tickets'">
       <v-col cols="12">
-        <h1 class="text-center">票券清單</h1>
+        <TicketOrder />
       </v-col>
     </v-container>
   </v-main>
@@ -32,6 +32,7 @@
 import { definePage } from "vue-router/auto";
 import { ref } from "vue";
 import ProductOrder from "@/components/member/productOrder.vue";
+import TicketOrder from "@/components/member/ticketOrder.vue";
 
 definePage({
   meta: {

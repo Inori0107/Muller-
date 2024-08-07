@@ -121,10 +121,15 @@ load();
 
 const addToCart = async (product, quantity) => {
   if (!user.isLogin) {
-    router.push("/login");
+    router.push({
+      query: {
+        login: true,
+      },
+    });
     return;
   }
   try {
+    console.log(product);
     const result = await user.addCart_P(product, quantity);
     createSnackbar({
       text: result.text,

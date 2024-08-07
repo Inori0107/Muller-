@@ -41,20 +41,11 @@
 </template>
 
 <script setup>
-import { definePage } from "vue-router/auto";
 import { useApi } from "@/composables/axios";
 import { useRouter } from "vue-router";
 import { ref, computed } from "vue";
 import { useSnackbar } from "vuetify-use-dialog";
 import { useUserStore } from "@/stores/user";
-
-definePage({
-  meta: {
-    title: "購物網 | 購物車",
-    login: true,
-    admin: false,
-  },
-});
 
 const { apiAuth } = useApi();
 const router = useRouter();

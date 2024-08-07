@@ -2,22 +2,21 @@
   <v-container>
     <v-col cols="12">
       <v-data-table :items="items" :headers="headers">
-        <template #[`item.p_id.name`]="{ item }">
-          <span v-if="item.p_id.sell">{{ item.p_id.name }}</span>
-          <span v-else class="text-red">{{ item.p_id.name }} (已下架)</span>
+        <template #[`item.t_id.name`]="{ item }">
+          <span>{{ item.t_id.name }}</span>
         </template>
         <template #[`item.quantity`]="{ item }">
           <v-btn
             variant="text"
             color="red"
-            @click="addCart_T(item.p_id._id, -1)"
+            @click="addCart_T(item.t_id._id, -1)"
             >-</v-btn
           >
           <span>{{ item.quantity }}</span>
           <v-btn
             variant="text"
             color="green"
-            @click="addCart_T(item.p_id._id, 1)"
+            @click="addCart_T(item.t_id._id, 1)"
             >+</v-btn
           >
         </template>
@@ -33,28 +32,17 @@
     </v-col>
     <v-col cols="12" class="text-center">
       <p>總金額: {{ total }}</p>
-      <v-btn color="green" :disabled="!canCheckout" @click="checkout"
-        >結帳</v-btn
-      >
+      <v-btn color="green" @click="checkout">結帳</v-btn>
     </v-col>
   </v-container>
 </template>
 
 <script setup>
-import { definePage } from "vue-router/auto";
 import { useApi } from "@/composables/axios";
 import { useRouter } from "vue-router";
 import { ref, computed } from "vue";
 import { useSnackbar } from "vuetify-use-dialog";
 import { useUserStore } from "@/stores/user";
-
-definePage({
-  meta: {
-    title: "購物網 | 購物車",
-    login: true,
-    admin: false,
-  },
-});
 
 const { apiAuth } = useApi();
 const router = useRouter();
@@ -63,13 +51,13 @@ const user = useUserStore();
 
 const items = ref([]);
 const headers = [
-  { title: "品名", key: "p_id.name" },
-  { title: "單價", key: "p_id.price" },
+  { title: "品名", key: "t_id.name" },
+  { title: "單價", key: "t_id.price" },
   { title: "數量", key: "quantity" },
   {
     title: "總價",
     key: "total",
-    value: (item) => item.p_id.price * item.quantity,
+    value: (item) => item.t_id.price * item.quantity,
   },
   { title: "操作", key: "action" },
 ];
@@ -92,12 +80,8 @@ loadItems();
 
 const total = computed(() => {
   return items.value.reduce((total, current) => {
-    return total + current.quantity * current.p_id.price;
+    return total + current.quantity * current.t_id.price;
   }, 0);
-});
-
-const canCheckout = computed(() => {
-  return items.value.length > 0 && !items.value.some((item) => !item.p_id.sell);
 });
 
 const loading = ref(false);
@@ -112,16 +96,14 @@ const checkout = async () => {
       color: result.color,
     },
   });
-
   if (result.color === "green") {
     router.push("/member");
   }
-
   loading.value = false;
 };
 
-const addCart_T = async (product, quantity) => {
-  const result = await user.addCart_T(product, quantity);
+const addCart_T = async (ticket, quantity) => {
+  const result = await user.addCart_T(ticket, quantity);
   createSnackbar({
     text: result.text,
     snackbarProps: {
@@ -129,7 +111,7 @@ const addCart_T = async (product, quantity) => {
     },
   });
   if (result.color === "green") {
-    const idx = items.value.findIndex((item) => item.p_id._id === product);
+    const idx = items.value.findIndex((item) => item.t_id._id === ticket);
     items.value[idx].quantity += quantity;
     if (items.value[idx].quantity <= 0) {
       items.value.splice(idx, 1);

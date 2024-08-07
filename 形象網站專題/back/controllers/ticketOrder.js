@@ -9,9 +9,6 @@ export const create = async (req, res) => {
 		if (req.user.cart_T.length === 0) throw new Error("EMPTY");
 		// 取得使用者購物車
 		const user = await User.findById(req.user._id, "cart_T").populate("cart_T.t_id");
-		// 檢查有沒有下架商品
-		const ok = user.cart_T.every((item) => item.t_id.sell);
-		if (!ok) throw new Error("SELL");
 		// 建立訂單
 		await Order.create({
 			user: req.user._id,
@@ -30,16 +27,6 @@ export const create = async (req, res) => {
 			res.status(StatusCodes.BAD_REQUEST).json({
 				success: true,
 				message: "購物車是空的"
-			});
-		} else if (error.name === "SELL") {
-			res.status(StatusCodes.BAD_REQUEST).json({
-				success: true,
-				message: "包含下架商品"
-			});
-		} else if (error.name === "SELL") {
-			res.status(StatusCodes.BAD_REQUEST).json({
-				success: true,
-				message: "包含下架商品"
 			});
 		} else if (error.name === "ValidationError") {
 			const key = Object.keys(error.errors)[0];

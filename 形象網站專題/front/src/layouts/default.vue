@@ -151,8 +151,8 @@ const menu = [
     name: "服務專區",
     items: [
       { text: "出版專輯", to: "/shop/product" },
-      { text: "訂票查詢", to: "/shop/ticket", requiresAuth: true },
-      { text: "會員專區", to: "/member", requiresAuth: true },
+      { text: "訂票查詢", to: "/shop/ticket" },
+      { text: "會員專區", to: "/member" },
     ],
   },
 ];

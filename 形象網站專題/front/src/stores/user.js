@@ -103,12 +103,12 @@ export const useUserStore = defineStore(
       }
     };
 
-    const addCart_T = async (ticket, quantity, s_id) => {
+    const addCart_T = async (ticket, quantity, seat_info) => {
       try {
         const { data } = await apiAuth.patch("/user/cart_T", {
           ticket,
           quantity,
-          s_id,
+          seat_info,
         });
         cart_T.value = data.result;
         return {

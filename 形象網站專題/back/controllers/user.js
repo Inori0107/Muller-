@@ -211,9 +211,9 @@ export const getCart_P = async (req, res) => {
 // 編輯票券購物車
 export const editCart_T = async (req, res) => {
 	try {
+		console.log(req.body.ticket);
 		if (!validator.isMongoId(req.body.ticket)) throw new Error("ID");
-
-		const idx = req.user.cart_T.findIndex((item) => item.p_id.toString() === req.body.ticket);
+		const idx = req.user.cart_T.findIndex((item) => item.t_id.toString() === req.body.ticket);
 		if (idx > -1) {
 			// 購物車內有這個商品，檢查修改後的數量
 			const quantity = req.user.cart_T[idx].quantity + parseInt(req.body.quantity);
@@ -227,11 +227,11 @@ export const editCart_T = async (req, res) => {
 		} else {
 			// 購物車內沒這個商品，檢查商品是否存在
 			const ticket = await Ticket.findById(req.body.ticket).orFail(new Error("NOT FOUND"));
-			if (!ticket.sell) throw new Error("SELL");
 
 			req.user.cart_T.push({
 				t_id: ticket._id,
-				quantity: req.body.quantity
+				quantity: req.body.quantity,
+				seat_info: req.body.seat_info
 			});
 		}
 
@@ -242,6 +242,7 @@ export const editCart_T = async (req, res) => {
 			result: req.user.ticketQuantity
 		});
 	} catch (error) {
+		console.log(error);
 		if (error.name === "CastError" || error.message === "ID") {
 			res.status(StatusCodes.BAD_REQUEST).json({
 				success: false,
@@ -251,11 +252,6 @@ export const editCart_T = async (req, res) => {
 			res.status(StatusCodes.NOT_FOUND).json({
 				success: false,
 				message: "查無商品"
-			});
-		} else if (error.message === "SELL") {
-			res.status(StatusCodes.BAD_REQUEST).json({
-				success: false,
-				message: "商品已下架"
 			});
 		} else if (error.name === "ValidationError") {
 			const key = Object.keys(error.errors)[0];
@@ -276,7 +272,7 @@ export const editCart_T = async (req, res) => {
 // 取得票券購物車
 export const getCart_T = async (req, res) => {
 	try {
-		const result = await User.findById(req.user._id, "cart_T").populate("cart_T.p_id");
+		const result = await User.findById(req.user._id, "cart_T").populate("cart_T.t_id");
 		res.status(StatusCodes.OK).json({
 			success: true,
 			message: "",
@@ -285,7 +281,7 @@ export const getCart_T = async (req, res) => {
 	} catch (error) {
 		res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
 			success: false,
-			message: "未知錯誤"
+			message: "未知錯誤111"
 		});
 	}
 };
