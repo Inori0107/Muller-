@@ -21,10 +21,10 @@
 </template>
 
 <script setup>
+import { definePage } from "vue-router/auto";
 import { ref, onMounted } from "vue";
 import { useApi } from "@/composables/axios";
 import { useSnackbar } from "vuetify-use-dialog";
-import { definePage } from "vue-router/auto";
 
 definePage({
   meta: {
@@ -62,6 +62,7 @@ const loadItems = async () => {
   try {
     const { data } = await apiAuth.get("/order/product/all");
     items.value = data.result;
+    console.log(items.value);
   } catch (error) {
     console.log(error);
     createSnackbar({

@@ -25,6 +25,10 @@ const ticketSchema = new Schema({
 		type: Number,
 		required: [true, "使用者購物車商品數量必填"],
 		min: [1, "使用者購物車商品數量不符"]
+	},
+	seat_info: {
+		type: [String],
+		required: [true, "使用者購物車商品座位資訊必填"]
 	}
 });
 

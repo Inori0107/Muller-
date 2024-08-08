@@ -7,12 +7,13 @@ export const create = async (req, res) => {
 	try {
 		// 檢查購物車有沒有東西
 		if (req.user.cart_T.length === 0) throw new Error("EMPTY");
-		// 取得使用者購物車
-		const user = await User.findById(req.user._id, "cart_T").populate("cart_T.t_id");
+		// 取得座位資訊
+		const seat_info = await User.findById(req.user._id, "cart_T").populate("cart_T.seat_info");
 		// 建立訂單
 		await Order.create({
 			user: req.user._id,
-			cart_T: req.user.cart_T
+			cart_T: req.user.cart_T,
+			seat_info: seat_info
 		});
 		// 清空購物車
 		req.user.cart_T = [];
@@ -47,7 +48,8 @@ export const create = async (req, res) => {
 // 取得票券訂單
 export const get = async (req, res) => {
 	try {
-		const result = await Order.find({ user: req.user._id }).populate("cart_T.t_id");
+		const orders = await Order.find({ user: req.user._id }).populate("cart_T.t_id");
+		const result = orders.filter((order) => order.cart_T && order.cart_T.length > 0);
 		res.status(StatusCodes.OK).json({
 			success: true,
 			message: "",
@@ -65,7 +67,8 @@ export const get = async (req, res) => {
 export const getAll = async (req, res) => {
 	try {
 		// 只選取 user 的 account 欄位。
-		const result = await Order.find().populate("user", "account").populate("cart_T.t_id");
+		const orders = await Order.find().populate("user", "account").populate("cart_T.t_id");
+		const result = orders.filter((order) => order.cart_T && order.cart_T.length > 0);
 		res.status(StatusCodes.OK).json({
 			success: true,
 			message: "",

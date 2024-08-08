@@ -61,7 +61,8 @@ export const create = async (req, res) => {
 export const get = async (req, res) => {
 	try {
 		// populate('cart.p_id') 關聯資料庫
-		const result = await Order.find({ user: req.user._id }).populate("cart_P.p_id");
+		const orders = await Order.find({ user: req.user._id }).populate("cart_P.p_id");
+		const result = orders.filter((order) => order.cart_P && order.cart_P.length > 0);
 		res.status(StatusCodes.OK).json({
 			success: true,
 			message: "",
@@ -79,7 +80,10 @@ export const get = async (req, res) => {
 export const getAll = async (req, res) => {
 	try {
 		// 只選取 user 的 account 欄位。
-		const result = await Order.find().populate("user", "account").populate("cart_P.p_id");
+		const orders = await Order.find().populate("user", "account").populate("cart_P.p_id");
+		// 過濾掉 cart_P 為空的訂單
+		const result = orders.filter((order) => order.cart_P && order.cart_P.length > 0);
+		console.log(result);
 		res.status(StatusCodes.OK).json({
 			success: true,
 			message: "",
