@@ -14,6 +14,6 @@ router.get("/product/all", auth.jwt, admin, getAllProductOrders);
 // Ticket Orders
 router.post("/ticket", auth.jwt, createTicketOrder);
 router.get("/ticket", auth.jwt, getTicketOrder);
-router.get("/ticket/all", auth.jwt, admin, getAllTicketOrders);
+router.get("/ticket/all", auth.jwt, getAllTicketOrders);
 
 export default router;

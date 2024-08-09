@@ -4265,6 +4265,7 @@ onMounted(loadSessions);
 onMounted(loadSeats);
 </script>
 
+
 <style scoped>
 .selected {
   fill: #000000;

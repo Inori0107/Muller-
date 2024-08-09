@@ -31,10 +31,19 @@
 </template>
 
 <script setup>
+import { definePage } from "vue-router/auto";
 import { ref } from "vue";
 import { useApi } from "@/composables/axios";
 import { useSnackbar } from "vuetify-use-dialog";
 import TicketManage from "@/components/ticket/tickets.vue";
+
+definePage({
+  meta: {
+    title: "木樓合唱團 | 訂票系統",
+    login: true,
+    admin: false,
+  },
+});
 
 const { api } = useApi();
 const createSnackbar = useSnackbar();

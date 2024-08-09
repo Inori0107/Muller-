@@ -9,7 +9,7 @@ const router = Router();
 router.post("/", auth.jwt, admin, create);
 // 獲取產品列表
 router.get("/", get);
-router.get("/all", auth.jwt, admin, getAll);
+router.get("/all", auth.jwt, getAll);
 // router.get("/:id", getId);
 // 更新特定產品
 router.patch("/:id", auth.jwt, admin, edit);

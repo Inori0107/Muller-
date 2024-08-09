@@ -73,8 +73,6 @@ const submit = handleSubmit(async (values) => {
     });
     if (user.isAdmin) {
       router.push("/admin");
-    } else {
-      router.push("/member");
     }
     // if (result.role === "admin") {
     //   router.push("/admin");

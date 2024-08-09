@@ -4441,27 +4441,37 @@ const props = defineProps({
   },
 });
 
-// 全局狀態
-const sessions = ref([]);
+const sessions = ref("");
 const tickets = ref([]);
-const selectedCircles = ref([]);
+const selectedCircles = ref({});
+const reservedSeats = ref(new Set());
 const quantities = ref({});
-const selectedSessionId = ref(null);
 const selectedGroup = ref(false);
 const selectedName = ref("");
 const seat_info = ref([]);
 const selectedTicket = ref();
 const quantity = ref(0);
 
-// 格式化日期
-const formatDate = (dateString) =>
-  new Date(dateString).toISOString().split("T")[0];
+const resetCart = () => {
+  selectedCircles.value = {};
+  reservedSeats.value.clear();
+  quantities.value = {};
+  seat_info.value = [];
+  quantity.value = 0;
+  selectedTicket.value = null;
+};
 
-// 載入 sessions
-const loadSessions = async () => {
+// 根據 sessionId 獲取票務信息
+const fetchTicketsBySessionId = async (sessionId) => {
+  resetCart();
   try {
-    const { data } = await apiAuth.get("/session");
-    sessions.value = data.result.data;
+    const { data } = await api.get("/ticket", { params: { s_id: sessionId } });
+    sessions.value = sessionId;
+    tickets.value = data.result;
+    document
+      .querySelectorAll("circle")
+      .forEach((circle) => circle.classList.remove("faded"));
+    updateSvgSeats();
   } catch (error) {
     createSnackbar({
       text: error?.response?.data?.message || "發生錯誤",
@@ -4469,34 +4479,34 @@ const loadSessions = async () => {
     });
   }
 };
-
-// 載入座位資料
+// 載入座位信息
 const loadSeats = async () => {
   try {
     const { data } = await apiAuth.get("/order/ticket/all");
-    const sessionsMap = new Map(
-      sessions.value.map((session) => [session._id, session])
-    );
+    const sessionId = sessions.value;
+
+    let session = {
+      _id: sessionId,
+      quantity: 0,
+      seat_info: [],
+    };
 
     data.result.forEach((order) => {
       order.cart_T.forEach((ticket) => {
-        const sId = ticket.t_id.s_id;
-        if (sessionsMap.has(sId)) {
-          const session = sessionsMap.get(sId);
-          session.quantity = (session.quantity || 0) + ticket.quantity;
-          session.seat_info = (session.seat_info || []).concat(
-            ticket.seat_info
-          );
+        if (ticket.t_id.s_id === sessionId) {
+          session.quantity += ticket.quantity;
+          session.seat_info = session.seat_info.concat(ticket.seat_info);
         }
       });
     });
 
-    sessions.value.forEach((session) => {
-      if (session.seat_info) {
-        selectedCircles.value[session._id] = session.seat_info;
-        quantities.value[session._id] = session.quantity;
-      }
-    });
+    if (session.seat_info.length > 0) {
+      selectedCircles.value[session._id] = session.seat_info;
+      quantities.value[session._id] = session.quantity;
+      session.seat_info.forEach((seat) => reservedSeats.value.add(seat));
+    }
+
+    updateSvgSeats();
   } catch (error) {
     createSnackbar({
       text: error?.response?.data?.message || "發生錯誤",
@@ -4504,26 +4514,31 @@ const loadSeats = async () => {
     });
   }
 };
-
-// 更新 SVG 座位樣式
-const updateSvgSeats = (sessionId) => {
+// 更新 SVG 座位顯示
+const updateSvgSeats = () => {
   document
     .querySelectorAll("circle.selected")
     .forEach((circle) => circle.classList.remove("selected"));
-  const session = sessions.value.find((s) => s._id === sessionId);
-  session?.seat_info?.forEach((seat) => {
+  document
+    .querySelectorAll("circle.reserved")
+    .forEach((circle) => circle.classList.remove("reserved"));
+
+  const sessionId = sessions.value;
+  const seatInfo = selectedCircles.value[sessionId] || [];
+  seatInfo.forEach((seat) => {
     const circle = document.querySelector(`circle#${seat}`);
     circle?.classList.add("selected");
   });
+  reservedSeats.value.forEach((seat) => {
+    const circle = document.querySelector(`circle#${seat}`);
+    circle?.classList.add("reserved");
+  });
 };
 
-// 打開票務管理
-const openTicketManagement = (sessionId) => {
-  selectedSessionId.value = sessionId;
-  updateSvgSeats(sessionId);
+const isReserved = (seat) => {
+  return reservedSeats.value.has(seat);
 };
-
-// 選區高亮
+// 高亮顯示相關座位
 const highlightSeats = (name) => {
   const allCircles = document.querySelectorAll("circle");
   const relatedSeats = document.querySelectorAll(`g#${name} circle`);
@@ -4535,29 +4550,41 @@ const highlightSeats = (name) => {
   selectedGroup.value = !isSelected;
   selectedName.value = isSelected ? "" : name;
 };
-
-// 處理選中的座位
+// 處理座位選擇
 const handleSelected = (seat) => {
+  if (isReserved(seat)) {
+    createSnackbar({
+      text: "此座位已被選擇",
+      snackbarProps: { color: "red" },
+    });
+    return;
+  }
+
   const seatElement = document.querySelector(`circle#${seat}`);
   const seatGroup = seatElement.parentNode.id;
   selectedTicket.value = tickets.value.find(
     (ticket) => ticket.name === seatGroup
   );
 
-  if (selectedCircles.value.includes(seat)) {
+  if (selectedCircles.value[seatGroup]?.includes(seat)) {
     seatElement.classList.remove("selected");
     seat_info.value = seat_info.value.filter((s) => s !== seat);
-    selectedCircles.value = selectedCircles.value.filter((s) => s !== seat);
+    selectedCircles.value[seatGroup] = selectedCircles.value[seatGroup].filter(
+      (s) => s !== seat
+    );
   } else {
     seatElement.classList.add("selected");
     seat_info.value.push(seat);
-    selectedCircles.value.push(seat);
+    if (selectedCircles.value[seatGroup]) {
+      selectedCircles.value[seatGroup].push(seat);
+    } else {
+      selectedCircles.value[seatGroup] = [seat];
+    }
   }
 
   quantity.value = seat_info.value.length;
   selectedTicket.value = selectedTicket.value._id;
 };
-
 // 添加到購物車
 const addToCart = async (selectedTicket, quantity, seat_info) => {
   if (!user.isLogin) {
@@ -4576,25 +4603,19 @@ const addToCart = async (selectedTicket, quantity, seat_info) => {
   }
 };
 
-// 載入指定 session 的票務資料
-const fetchTicketsBySessionId = async (sessionId) => {
-  try {
-    const { data } = await api.get("/ticket", { params: { s_id: sessionId } });
-    tickets.value = data.result;
-  } catch (error) {
-    createSnackbar({
-      text: error?.response?.data?.message || "發生錯誤",
-      snackbarProps: { color: "red" },
-    });
-  }
-};
+onMounted(() => {
+  fetchTicketsBySessionId(props.sessionId);
+  loadSeats();
+});
 
-// 初始化
-onMounted(loadSessions);
-onMounted(loadSeats);
-
-// 監視 sessionId 變化
-watch(() => props.sessionId, fetchTicketsBySessionId, { immediate: true });
+watch(
+  () => props.sessionId,
+  (newSessionId) => {
+    fetchTicketsBySessionId(newSessionId);
+    loadSeats();
+  },
+  { immediate: true }
+);
 </script>
 
 <style scoped>
@@ -4603,5 +4624,9 @@ watch(() => props.sessionId, fetchTicketsBySessionId, { immediate: true });
 }
 .selected {
   fill: #000;
+}
+.reserved {
+  fill: #ff0000; /* 你可以根據需要更改顏色 */
+  pointer-events: none; /* 防止被選擇 */
 }
 </style>
